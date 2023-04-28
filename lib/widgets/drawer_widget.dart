@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
+import 'package:violation_system/screens/views/admin/officer_status.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -49,8 +50,8 @@ class _MyDrawerState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const OfficerStatusScreen()));
               },
             ),
             ListTile(
