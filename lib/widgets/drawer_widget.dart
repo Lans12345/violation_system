@@ -51,7 +51,7 @@ class _MyDrawerState extends State<DrawerWidget> {
               ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const OfficerStatusScreen()));
+                    builder: (context) => OfficerStatusScreen()));
               },
             ),
             ListTile(
