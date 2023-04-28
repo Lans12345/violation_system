@@ -27,7 +27,7 @@ class _HomeTabState extends State<HomeTab> {
                 fontSize: 32,
                 color: Colors.black),
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
             TextRegular(
                 text: 'Violation Records', fontSize: 18, color: Colors.grey),
