@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905443420916",
+    "project_id": "violation-system",
+    "storage_bucket": "violation-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905443420916:android:a2ba0857487f064df30ca1",
+        "android_client_info": {
+          "package_name": "com.example.violation_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905443420916-e8u5b2g8gkjpasgb7qbs5koni77hk5tm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLmL4DvjWfWwFk0AIpSyV7qF9j3IrJSJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905443420916-e8u5b2g8gkjpasgb7qbs5koni77hk5tm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
