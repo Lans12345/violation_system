@@ -85,12 +85,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: QRegular
-      fonts:
-        - asset: assets/fonts/Quicksand-Regular.ttf
-    - family: QBold
-      fonts:
-        - asset: assets/fonts/Outfit-Bold.ttf
+      - family: QRegular
+        fonts:
+          - asset: assets/fonts/Quicksand-Regular.ttf
+      - family: QBold
+        fonts:
+          - asset: assets/fonts/Outfit-Bold.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
