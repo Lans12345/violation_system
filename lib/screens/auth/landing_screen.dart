@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/admin/admin_login.dart';
+import 'package:violation_system/screens/auth/officer/office_login.dart';
 import 'package:violation_system/widgets/button_widget.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
@@ -30,7 +31,10 @@ class LandingScreen extends StatelessWidget {
             ),
             ButtonWidget(
               label: 'Continue as Officer',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => OfficerLogin()));
+              },
             ),
             const SizedBox(
               height: 20,
