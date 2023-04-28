@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/views/officer/officer_home_screen.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/text_widget.dart';
+import '../../../widgets/toast_widget.dart';
 
 class OfficerLogin extends StatelessWidget {
   final usernameController = TextEditingController();
@@ -47,7 +49,11 @@ class OfficerLogin extends StatelessWidget {
               ),
               ButtonWidget(
                 label: 'Login as Officer',
-                onPressed: () {},
+                onPressed: () {
+                  showToast('Logged in succesfully!');
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const OfficerHomeScreen()));
+                },
               ),
               const SizedBox(
                 height: 50,
