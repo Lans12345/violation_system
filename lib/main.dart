@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      color: Color(0xff6571E0),
       home: LandingScreen(),
     );
   }
