@@ -24,12 +24,12 @@ class _MyDrawerState extends State<DrawerWidget> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: Color(0xff6571E0),
               ),
               accountEmail:
                   TextRegular(text: '', fontSize: 0, color: Colors.white),
               accountName: TextBold(
-                text: box.read('name') ?? 'Crew',
+                text: 'Administrator',
                 fontSize: 14,
                 color: Colors.white,
               ),
@@ -44,7 +44,29 @@ class _MyDrawerState extends State<DrawerWidget> {
             ),
             ListTile(
               title: TextBold(
-                text: 'Banner Messages',
+                text: 'Officers Status',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+              onTap: () {
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+              },
+            ),
+            ListTile(
+              title: TextBold(
+                text: 'Request List',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+              onTap: () {
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+              },
+            ),
+            ListTile(
+              title: TextBold(
+                text: 'Manage Account',
                 fontSize: 12,
                 color: Colors.black,
               ),

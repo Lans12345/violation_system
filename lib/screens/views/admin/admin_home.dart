@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/widgets/drawer_widget.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class AdminHome extends StatelessWidget {
@@ -7,7 +8,7 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         backgroundColor: const Color(0xff6571E0),
         title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
