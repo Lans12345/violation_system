@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../../widgets/text_widget.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
+  @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  final searchController = TextEditingController();
+
+  String nameSearched = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +31,33 @@ class HomeTab extends StatelessWidget {
             ),
             TextRegular(
                 text: 'Violation Records', fontSize: 18, color: Colors.grey),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 50,
+              width: 350,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(5)),
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    nameSearched = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                    hintText: 'Search',
+                    hintStyle: TextStyle(fontFamily: 'QRegular'),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    )),
+                controller: searchController,
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
