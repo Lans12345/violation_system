@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
+import 'package:violation_system/screens/views/admin/admin_home.dart';
+import 'package:violation_system/screens/views/admin/manage_account.dart';
 import 'package:violation_system/screens/views/admin/officer_status.dart';
+import 'package:violation_system/screens/views/admin/request_list.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -45,13 +48,24 @@ class _MyDrawerState extends State<DrawerWidget> {
             ),
             ListTile(
               title: TextBold(
+                text: 'Home',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const AdminHome()));
+              },
+            ),
+            ListTile(
+              title: TextBold(
                 text: 'Officers Status',
                 fontSize: 12,
                 color: Colors.black,
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => OfficerStatusScreen()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const OfficerStatusScreen()));
               },
             ),
             ListTile(
@@ -61,8 +75,8 @@ class _MyDrawerState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const RequestListScreen()));
               },
             ),
             ListTile(
@@ -72,8 +86,8 @@ class _MyDrawerState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ManageAccountScreen()));
               },
             ),
             ListTile(
