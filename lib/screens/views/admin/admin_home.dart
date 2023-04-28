@@ -20,6 +20,51 @@ class AdminHome extends StatelessWidget {
           )
         ],
       ),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 30,
+            ),
+            TextBold(text: 'Welcome Admin!', fontSize: 32, color: Colors.black),
+            const SizedBox(
+              height: 50,
+            ),
+            TextRegular(
+                text: 'Recent Activities', fontSize: 18, color: Colors.grey),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: SizedBox(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                      child: Card(
+                        child: ListTile(
+                          title: TextBold(
+                              text: 'Activity Title',
+                              fontSize: 14,
+                              color: Colors.black),
+                          subtitle: TextRegular(
+                              text: 'Name of Officer Incharge',
+                              fontSize: 11,
+                              color: Colors.grey),
+                          trailing: TextRegular(
+                              text: 'Date and Time',
+                              fontSize: 12,
+                              color: Colors.grey),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
