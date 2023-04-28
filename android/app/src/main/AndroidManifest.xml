@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.violation_system">
    <application
-        android:label="violation_system"
+        android:label="Violation System"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
