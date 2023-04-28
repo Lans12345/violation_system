@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/views/admin/admin_home.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 
@@ -52,8 +53,8 @@ class AdminLogin extends StatelessWidget {
                   if (usernameController.text == 'admin-username' &&
                       passwordController.text == 'admin-password') {
                     showToast('Logged in succesfully!');
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => AdminLogin()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const AdminHome()));
                   } else {
                     showToast('Invalid account! Please try again');
                   }
