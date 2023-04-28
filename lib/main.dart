@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/home_screen.dart';
 
 import 'firebase_options.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomeScreen(),
+      home: LandingScreen(),
     );
   }
 }
