@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
+import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
@@ -53,7 +54,10 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
         actions: [
           _currentIndex != 3
               ? IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const OfficerNotifScreen()));
+                  },
                   icon: const Icon(
                     Icons.notifications_outlined,
                     color: Colors.white,
