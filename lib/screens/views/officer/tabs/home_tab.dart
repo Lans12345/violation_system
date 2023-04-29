@@ -69,18 +69,19 @@ class _HomeTabState extends State<HomeTab> {
                       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                       child: Card(
                         child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LicensePage()));
+                          },
                           title: TextBold(
-                              text: 'Name of Violation',
+                              text: 'License Number',
                               fontSize: 14,
                               color: Colors.black),
                           subtitle: TextRegular(
                               text: 'Person who commited the violation',
                               fontSize: 11,
                               color: Colors.grey),
-                          trailing: TextRegular(
-                              text: 'Date and Time',
-                              fontSize: 12,
-                              color: Colors.grey),
+                          trailing: const Icon(Icons.arrow_forward),
                         ),
                       ),
                     );
