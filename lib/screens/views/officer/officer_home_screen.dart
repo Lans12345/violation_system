@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
+import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
 
 import '../../../widgets/text_widget.dart';
@@ -20,7 +21,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
     const HomeTab(),
     const ToplistTab(),
     const ActiveTab(),
-    const SizedBox(),
+    const ProfileTab(),
   ];
 
   void onTabTapped(int index) {
@@ -44,7 +45,10 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
           child: Image.asset('assets/images/logo.png'),
         ),
         backgroundColor: const Color(0xff6571E0),
-        title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
+        title: TextBold(
+            text: _currentIndex != 3 ? 'T & VR' : 'My Profile',
+            fontSize: 24,
+            color: Colors.white),
         centerTitle: true,
         actions: [
           _currentIndex != 3
