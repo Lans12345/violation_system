@@ -29,6 +29,12 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _currentIndex == 1
+          ? FloatingActionButton(
+              backgroundColor: const Color(0xff6571E0),
+              child: const Icon(Icons.add),
+              onPressed: () {})
+          : const SizedBox(),
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
