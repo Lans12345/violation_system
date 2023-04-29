@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:violation_system/widgets/text_widget.dart';
 
-class ToplistTab extends StatelessWidget {
-  const ToplistTab({super.key});
+import '../../../../widgets/text_widget.dart';
+
+class ActiveTab extends StatelessWidget {
+  const ActiveTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,8 @@ class ToplistTab extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            TextBold(text: 'Top List', fontSize: 24, color: Colors.black),
+            TextBold(
+                text: 'Active Officers', fontSize: 24, color: Colors.black),
             const SizedBox(
               height: 10,
             ),
@@ -25,18 +27,18 @@ class ToplistTab extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                       child: Card(
                         child: ListTile(
+                          leading: const Icon(
+                            Icons.online_prediction_rounded,
+                            color: Colors.green,
+                          ),
                           title: TextBold(
-                              text: 'Location',
+                              text: 'Name of Officer',
                               fontSize: 14,
                               color: Colors.black),
-                          subtitle: TextRegular(
-                              text: 'Person who commited the violation',
-                              fontSize: 11,
-                              color: Colors.grey),
-                          trailing: TextRegular(
-                              text: 'Date and Time',
-                              fontSize: 12,
-                              color: Colors.grey),
+                          trailing: const Icon(
+                            Icons.waving_hand_rounded,
+                            color: Colors.amber,
+                          ),
                         ),
                       ),
                     );

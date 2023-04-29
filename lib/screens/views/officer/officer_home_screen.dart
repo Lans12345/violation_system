@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
 
@@ -17,7 +18,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   final List<Widget> _children = [
     const HomeTab(),
     const ToplistTab(),
-    const SizedBox(),
+    const ActiveTab(),
     const SizedBox(),
   ];
 
