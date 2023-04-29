@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/views/officer/officer_home_screen.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
@@ -49,10 +50,17 @@ class OfficerLogin extends StatelessWidget {
               ),
               ButtonWidget(
                 label: 'Login as Officer',
-                onPressed: () {
-                  showToast('Logged in succesfully!');
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const OfficerHomeScreen()));
+                onPressed: () async {
+                  try {
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: '${usernameController.text}@officer.com',
+                        password: passwordController.text);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const OfficerHomeScreen()));
+                    showToast('Logged in succesfully!');
+                  } on Exception catch (e) {
+                    showToast("An error occurred: $e");
+                  }
                 },
               ),
               const SizedBox(

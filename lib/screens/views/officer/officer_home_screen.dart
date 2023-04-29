@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
@@ -252,7 +253,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                 ),
                                 MaterialButton(
                                   onPressed: () async {
-                                    // await FirebaseAuth.instance.signOut();
+                                    await FirebaseAuth.instance.signOut();
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
