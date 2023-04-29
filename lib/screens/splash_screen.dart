@@ -1,12 +1,8 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
-
-import '../widgets/text_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,23 +33,21 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextBold(text: 'Welcome', fontSize: 32, color: Colors.white),
               const SizedBox(
                 height: 20,
               ),
-              const SpinKitDoubleBounce(
-                size: 32,
-                color: Color(0xff6571E0),
+              Image.asset(
+                'assets/images/logo.png',
+                width: 250,
               ),
               const SizedBox(
                 height: 50,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 100, right: 100),
-                child: LinearProgressIndicator(
-                  color: Colors.blue[900],
-                ),
-              ),
+                  padding: const EdgeInsets.only(left: 100, right: 100),
+                  child: SpinKitThreeBounce(
+                    color: Colors.blue[900],
+                  )),
             ],
           ),
         ),
