@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/views/admin/admin_home.dart';
+import 'package:violation_system/services/add_account.dart';
 
 import '../../../widgets/drawer_widget.dart';
 import '../../../widgets/text_widget.dart';
+import '../../../widgets/toast_widget.dart';
 
 class ManageAccountScreen extends StatefulWidget {
   const ManageAccountScreen({super.key});
@@ -333,7 +337,32 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                           ),
                           actions: <Widget>[
                             MaterialButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  final user = await FirebaseAuth.instance
+                                      .createUserWithEmailAndPassword(
+                                          email: '$userName@officer.com',
+                                          password: password);
+
+                                  addAccount(
+                                      userName,
+                                      '$firstName $lastName',
+                                      password,
+                                      contactNumber,
+                                      gender,
+                                      age,
+                                      address,
+                                      user.user!.uid);
+
+                                  showToast("Registered Succesfully!");
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AdminHome()));
+                                } on Exception catch (e) {
+                                  showToast("An error occurred: $e");
+                                }
+                              },
                               child: const Text(
                                 'Continue',
                                 style: TextStyle(
