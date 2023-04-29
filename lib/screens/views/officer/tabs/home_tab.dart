@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/views/officer/tabs/license_tab.dart';
 
 import '../../../../widgets/text_widget.dart';
 
@@ -71,7 +72,7 @@ class _HomeTabState extends State<HomeTab> {
                         child: ListTile(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LicensePage()));
+                                builder: (context) => const LicenseTab()));
                           },
                           title: TextBold(
                               text: 'License Number',
