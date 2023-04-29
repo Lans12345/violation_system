@@ -10,6 +10,7 @@ class TextFieldWidget extends StatelessWidget {
   final double? height;
   final int? maxLine;
   final TextInputType? inputType;
+  final bool? enabled;
 
   const TextFieldWidget(
       {super.key,
@@ -20,6 +21,7 @@ class TextFieldWidget extends StatelessWidget {
       this.width = 300,
       this.height = 35,
       this.maxLine = 1,
+      this.enabled = true,
       this.inputType = TextInputType.text});
 
   @override
@@ -40,6 +42,7 @@ class TextFieldWidget extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(5)),
           child: TextFormField(
+            enabled: enabled,
             keyboardType: inputType,
             decoration: InputDecoration(
               hintText: hint,
