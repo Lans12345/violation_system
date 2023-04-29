@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:violation_system/screens/auth/landing_screen.dart';
+import 'package:violation_system/screens/splash_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       color: Color(0xff6571E0),
-      home: LandingScreen(),
+      home: SplashScreen(),
     );
   }
 }
