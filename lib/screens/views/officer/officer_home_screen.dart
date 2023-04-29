@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
@@ -46,13 +47,57 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
         title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_outlined,
-              color: Colors.white,
-            ),
-          ),
+          _currentIndex != 3
+              ? IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.notifications_outlined,
+                    color: Colors.white,
+                  ),
+                )
+              : IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: TextBold(
+                                  text: 'Logout Confirmation',
+                                  color: Colors.black,
+                                  fontSize: 14),
+                              content: TextRegular(
+                                  text: 'Are you sure you want to logout?',
+                                  color: Colors.black,
+                                  fontSize: 16),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: TextBold(
+                                      text: 'Close',
+                                      color: Colors.black,
+                                      fontSize: 14),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    // await FirebaseAuth.instance.signOut();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LandingScreen()));
+                                  },
+                                  child: TextBold(
+                                      text: 'Continue',
+                                      color: Colors.black,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ));
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                )
         ],
       ),
       body: _children[_currentIndex],
