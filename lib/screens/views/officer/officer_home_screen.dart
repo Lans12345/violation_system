@@ -35,6 +35,11 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   final platenumberController = TextEditingController();
   final vehicledescriptionController = TextEditingController();
   final locationController = TextEditingController();
+  final licenseController = TextEditingController();
+  final violationController = TextEditingController();
+  final nameController = TextEditingController();
+  final ageController = TextEditingController();
+  final genderController = TextEditingController();
 
   var _dropValue1 = 0;
 
@@ -59,82 +64,112 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                             fontSize: 18,
                             color: Colors.black),
                         content: StatefulBuilder(builder: (context, setState) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: TextRegular(
-                                    text: 'Vehicle Type',
-                                    fontSize: 12,
-                                    color: Colors.black),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                width: 300,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.black)),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                  child: DropdownButton(
-                                      dropdownColor: Colors.white,
-                                      focusColor: Colors.white,
-                                      value: _dropValue1,
-                                      items: [
-                                        for (int i = 0;
-                                            i < vehicles.length;
-                                            i++)
-                                          DropdownMenuItem(
-                                            onTap: (() {
-                                              vehicle = vehicles[i];
-                                            }),
-                                            value: i,
-                                            child: Row(
-                                              children: [
-                                                TextRegular(
-                                                    text: '${vehicles[i]}',
-                                                    fontSize: 14,
-                                                    color: Colors.black),
-                                              ],
-                                            ),
-                                          ),
-                                      ],
-                                      onChanged: ((value) {
-                                        setState(() {
-                                          _dropValue1 =
-                                              int.parse(value.toString());
-                                        });
-                                      })),
+                          return SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: TextRegular(
+                                      text: 'Vehicle Type',
+                                      fontSize: 12,
+                                      color: Colors.black),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextFieldWidget(
-                                  label: 'Plate Number',
-                                  controller: platenumberController),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextFieldWidget(
-                                  label: 'Vehicle Description',
-                                  controller: vehicledescriptionController),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextFieldWidget(
-                                  label: 'Location',
-                                  controller: locationController),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  width: 300,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.black)),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    child: DropdownButton(
+                                        dropdownColor: Colors.white,
+                                        focusColor: Colors.white,
+                                        value: _dropValue1,
+                                        items: [
+                                          for (int i = 0;
+                                              i < vehicles.length;
+                                              i++)
+                                            DropdownMenuItem(
+                                              onTap: (() {
+                                                vehicle = vehicles[i];
+                                              }),
+                                              value: i,
+                                              child: Row(
+                                                children: [
+                                                  TextRegular(
+                                                      text: '${vehicles[i]}',
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                        onChanged: ((value) {
+                                          setState(() {
+                                            _dropValue1 =
+                                                int.parse(value.toString());
+                                          });
+                                        })),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Name', controller: nameController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Gender',
+                                    controller: genderController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Age', controller: ageController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Violation/s',
+                                    controller: violationController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'License Number',
+                                    controller: licenseController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Plate Number',
+                                    controller: platenumberController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Vehicle Description',
+                                    controller: vehicledescriptionController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                    label: 'Location',
+                                    controller: locationController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
                           );
                         }),
                         actions: [
