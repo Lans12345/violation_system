@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
@@ -234,10 +235,42 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const OfficerNotifScreen()));
                   },
-                  icon: const Icon(
-                    Icons.notifications_outlined,
-                    color: Colors.white,
-                  ),
+                  icon: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('Notifs')
+                          .where('officerId',
+                              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          print(snapshot.error);
+                          return const Center(child: Text('Error'));
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.black,
+                            )),
+                          );
+                        }
+
+                        final data = snapshot.requireData;
+                        return Badge(
+                          isLabelVisible: data.docs.isNotEmpty,
+                          label: TextRegular(
+                              text: data.docs.length.toString(),
+                              fontSize: 12,
+                              color: Colors.white),
+                          child: const Icon(
+                            Icons.notifications_outlined,
+                            color: Colors.white,
+                          ),
+                        );
+                      }),
                 )
               : IconButton(
                   onPressed: () {
