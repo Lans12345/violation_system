@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 import 'package:intl/intl.dart';
 import '../../../../widgets/text_widget.dart';
@@ -144,13 +145,17 @@ class _LicenseTabState extends State<LicenseTab> {
                     ),
                     MaterialButton(
                       onPressed: () async {
-                        locationController.clear();
-                        vehicledescriptionController.clear();
-                        platenumberController.clear();
-                        ageController.clear();
-                        nameController.clear();
-                        violationController.clear();
-                        genderController.clear();
+                        addViolation(
+                            vehicle,
+                            widget.userDetails['name'],
+                            widget.userDetails['gender'],
+                            widget.userDetails['age'],
+                            violationController.text,
+                            licenseController.text,
+                            platenumberController.text,
+                            vehicledescriptionController.text,
+                            locationController.text);
+
                         Navigator.of(context).pop(true);
                         showDialog(
                             context: context,
@@ -205,8 +210,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                                       child: Row(
                                                         children: [
                                                           TextRegular(
-                                                              text:
-                                                                  '${vehicles[i]}',
+                                                              text: vehicle,
                                                               fontSize: 14,
                                                               color:
                                                                   Colors.black),
@@ -226,7 +230,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Name of person',
+                                            hint: widget.userDetails['name'],
                                             enabled: false,
                                             label: 'Name',
                                             controller: nameController),
@@ -234,7 +238,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Gender of person',
+                                            hint: widget.userDetails['gender'],
                                             enabled: false,
                                             label: 'Gender',
                                             controller: genderController),
@@ -242,7 +246,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Age of person',
+                                            hint: widget.userDetails['age'],
                                             enabled: false,
                                             label: 'Age',
                                             controller: ageController),
@@ -250,7 +254,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Violation Commited',
+                                            hint: violationController.text,
                                             enabled: false,
                                             label: 'Violation/s',
                                             controller: violationController),
@@ -258,8 +262,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint:
-                                                'License Number of the Person',
+                                            hint: licenseController.text,
                                             enabled: false,
                                             label: 'License Number',
                                             controller: licenseController),
@@ -267,7 +270,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Plate Number of the vehicle',
+                                            hint: platenumberController.text,
                                             enabled: false,
                                             label: 'Plate Number',
                                             controller: platenumberController),
@@ -275,7 +278,8 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint: 'Vehicle Description',
+                                            hint: vehicledescriptionController
+                                                .text,
                                             enabled: false,
                                             label: 'Vehicle Description',
                                             controller:
@@ -284,8 +288,7 @@ class _LicenseTabState extends State<LicenseTab> {
                                           height: 10,
                                         ),
                                         TextFieldWidget(
-                                            hint:
-                                                'Location where the violation commited',
+                                            hint: locationController.text,
                                             enabled: false,
                                             label: 'Location',
                                             controller: locationController),
@@ -299,6 +302,13 @@ class _LicenseTabState extends State<LicenseTab> {
                                 actions: [
                                   MaterialButton(
                                     onPressed: () {
+                                      locationController.clear();
+                                      vehicledescriptionController.clear();
+                                      platenumberController.clear();
+                                      ageController.clear();
+                                      nameController.clear();
+                                      violationController.clear();
+                                      genderController.clear();
                                       Navigator.of(context).pop(true);
                                       showToast('Violation Added!');
                                     },

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future addViolation(
   car,
@@ -27,6 +28,7 @@ Future addViolation(
     'long': 0.00,
     'id': docUser.id,
     'dateTime': DateTime.now(),
+    'officerId': FirebaseAuth.instance.currentUser!.uid
   };
 
   await docUser.set(json);
