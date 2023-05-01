@@ -6,6 +6,7 @@ import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
+import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 
@@ -184,6 +185,17 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                           ),
                           MaterialButton(
                             onPressed: () async {
+                              Navigator.of(context).pop();
+                              addViolation(
+                                  vehicle,
+                                  nameController.text,
+                                  genderController.text,
+                                  ageController.text,
+                                  violationController.text,
+                                  licenseController.text,
+                                  platenumberController.text,
+                                  vehicledescriptionController.text,
+                                  locationController.text);
                               locationController.clear();
                               vehicledescriptionController.clear();
                               platenumberController.clear();
@@ -191,8 +203,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                               nameController.clear();
                               violationController.clear();
                               genderController.clear();
-
-                              Navigator.of(context).pop();
                               showToast('Violation Added!');
                             },
                             child: TextBold(

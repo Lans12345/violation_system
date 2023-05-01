@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../widgets/text_widget.dart';
 import '../../../../widgets/textfield_widget.dart';
 
 class LicenseTab extends StatefulWidget {
-  const LicenseTab({super.key});
+  final userDetails;
+
+  const LicenseTab({super.key, required this.userDetails});
 
   @override
   State<LicenseTab> createState() => _LicenseTabState();
@@ -327,8 +330,10 @@ class _LicenseTabState extends State<LicenseTab> {
           ),
         ),
         backgroundColor: const Color(0xff6571E0),
-        title:
-            TextBold(text: 'License Number', fontSize: 24, color: Colors.white),
+        title: TextBold(
+            text: widget.userDetails['licenseNumber'],
+            fontSize: 24,
+            color: Colors.white),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -351,26 +356,17 @@ class _LicenseTabState extends State<LicenseTab> {
                   height: 10,
                 ),
                 Center(
-                  child:
-                      TextBold(text: 'Name', fontSize: 18, color: Colors.black),
+                  child: TextBold(
+                      text: widget.userDetails['name'],
+                      fontSize: 18,
+                      color: Colors.black),
                 ),
                 Center(
                     child: TextBold(
-                        text: 'Gender | Age',
+                        text:
+                            '${widget.userDetails['gender']} | ${widget.userDetails['age']}',
                         fontSize: 16,
                         color: Colors.black)),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextRegular(
-                    text: 'Contact Number: Contact Number',
-                    fontSize: 14,
-                    color: Colors.grey),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextRegular(
-                    text: 'Address: Address', fontSize: 14, color: Colors.grey),
                 const SizedBox(
                   height: 30,
                 ),
@@ -383,32 +379,59 @@ class _LicenseTabState extends State<LicenseTab> {
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                  height: 280,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                        child: Card(
-                          child: ListTile(
-                            title: TextBold(
-                                text: 'Name of Violation',
-                                fontSize: 14,
-                                color: Colors.black),
-                            subtitle: TextRegular(
-                                text: 'Location where the violation commited',
-                                fontSize: 11,
-                                color: Colors.grey),
-                            trailing: TextRegular(
-                                text: 'Date and Time',
-                                fontSize: 12,
-                                color: Colors.grey),
-                          ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Violations')
+                        .where('licenseNumber',
+                            isEqualTo: widget.userDetails['licenseNumber'])
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return const Center(child: Text('Error'));
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.black,
+                          )),
+                        );
+                      }
+
+                      final data = snapshot.requireData;
+                      return SizedBox(
+                        height: 280,
+                        child: ListView.builder(
+                          itemCount: data.docs.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                              child: Card(
+                                child: ListTile(
+                                  title: TextBold(
+                                      text: data.docs[index]['violation'],
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  subtitle: TextRegular(
+                                      text: data.docs[index]['location'],
+                                      fontSize: 11,
+                                      color: Colors.grey),
+                                  trailing: TextRegular(
+                                      text: DateFormat.yMMMd().add_jm().format(
+                                          data.docs[index]['dateTime']
+                                              .toDate()),
+                                      fontSize: 12,
+                                      color: Colors.grey),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
-                    },
-                  ),
-                ),
+                    }),
               ],
             ),
           ),

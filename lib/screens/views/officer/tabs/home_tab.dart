@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/screens/views/officer/tabs/license_tab.dart';
-
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 import '../../../../widgets/text_widget.dart';
 
 class HomeTab extends StatefulWidget {
@@ -12,6 +14,8 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final searchController = TextEditingController();
+
+  final box = GetStorage();
 
   String nameSearched = '';
   @override
@@ -62,34 +66,67 @@ class _HomeTabState extends State<HomeTab> {
             const SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: SizedBox(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                      child: Card(
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LicenseTab()));
-                          },
-                          title: TextBold(
-                              text: 'License Number',
-                              fontSize: 14,
-                              color: Colors.black),
-                          subtitle: TextRegular(
-                              text: 'Person who commited the violation',
-                              fontSize: 11,
-                              color: Colors.grey),
-                          trailing: const Icon(Icons.arrow_forward),
-                        ),
-                      ),
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Violations')
+                    .where('licenseNumber',
+                        isGreaterThanOrEqualTo:
+                            toBeginningOfSentenceCase(nameSearched))
+                    .where('licenseNumber',
+                        isLessThan:
+                            '${toBeginningOfSentenceCase(nameSearched)}z')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
                     );
-                  },
-                ),
-              ),
-            ),
+                  }
+
+                  final data = snapshot.requireData;
+                  return Expanded(
+                    child: SizedBox(
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        itemBuilder: (context, index) {
+                          final violationData = data.docs[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            child: Card(
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => LicenseTab(
+                                            userDetails: violationData,
+                                          )));
+                                },
+                                title: TextBold(
+                                    text: violationData['licenseNumber'],
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                subtitle: TextRegular(
+                                    text: violationData['name'],
+                                    fontSize: 11,
+                                    color: Colors.grey),
+                                trailing: const Icon(Icons.arrow_forward),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
