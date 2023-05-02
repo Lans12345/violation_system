@@ -56,7 +56,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
     return Scaffold(
       floatingActionButton: _currentIndex == 1 || _currentIndex == 0
           ? FloatingActionButton(
-              backgroundColor: const Color(0xff6571E0),
+              backgroundColor: const Color.fromARGB(255, 240, 23, 95),
               child: const Icon(Icons.add),
               onPressed: () {
                 showDialog(
@@ -222,7 +222,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Image.asset('assets/images/logo.png'),
         ),
-        backgroundColor: const Color(0xff6571E0),
+        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         title: TextBold(
             text: _currentIndex != 3 ? 'T & VR' : 'My Profile',
             fontSize: 24,

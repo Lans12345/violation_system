@@ -11,7 +11,7 @@ class RequestListScreen extends StatelessWidget {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: const Color(0xff6571E0),
+        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         title: TextBold(
             text: 'Request for Approval', fontSize: 18, color: Colors.white),
         centerTitle: true,

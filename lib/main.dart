@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      color: Color(0xff6571E0),
+      color: Color.fromARGB(255, 240, 23, 95),
       home: SplashScreen(),
     );
   }

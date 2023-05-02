@@ -28,7 +28,7 @@ class _MyDrawerState extends State<DrawerWidget> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(
-                color: Color(0xff6571E0),
+                color: Color.fromARGB(255, 240, 23, 95),
               ),
               accountEmail:
                   TextRegular(text: '', fontSize: 0, color: Colors.white),

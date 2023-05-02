@@ -37,7 +37,7 @@ class _LicenseTabState extends State<LicenseTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xff6571E0),
+        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         child: const Icon(Icons.add),
         onPressed: () {
           showDialog(
@@ -339,7 +339,7 @@ class _LicenseTabState extends State<LicenseTab> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xff6571E0),
+        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         title: TextBold(
             text: widget.userDetails['licenseNumber'],
             fontSize: 24,

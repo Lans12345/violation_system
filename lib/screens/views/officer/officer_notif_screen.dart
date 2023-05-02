@@ -20,7 +20,7 @@ class OfficerNotifScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xff6571E0),
+        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         title:
             TextBold(text: 'Notifications', fontSize: 24, color: Colors.white),
         centerTitle: true,
