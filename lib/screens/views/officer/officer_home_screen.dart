@@ -51,6 +51,13 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
 
   late String vehicle = 'Car';
 
+  final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+      .collection('Officers')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
+
+  var _value = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -314,7 +321,49 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                     Icons.logout,
                     color: Colors.white,
                   ),
-                )
+                ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: userData,
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong'));
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const SizedBox();
+                }
+                dynamic data = snapshot.data;
+                return Container(
+                  padding: const EdgeInsets.only(right: 20),
+                  width: 50,
+                  child: SwitchListTile(
+                    value: data['isActive'],
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                        if (_value == true) {
+                          FirebaseFirestore.instance
+                              .collection('Officers')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'isActive': true,
+                          });
+                          showToast('Status: Active');
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection('Officers')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'isActive': false,
+                          });
+                          showToast('Status: Inactive');
+                        }
+                      });
+                    },
+                  ),
+                );
+              }),
         ],
       ),
       body: _children[_currentIndex],
