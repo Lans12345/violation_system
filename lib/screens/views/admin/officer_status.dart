@@ -104,6 +104,11 @@ class _OfficerStatusScreenState extends State<OfficerStatusScreen> {
                                     text: officerData.docs[index]['name'],
                                     fontSize: 14,
                                     color: Colors.black),
+                                subtitle: TextRegular(
+                                    text: officerData.docs[index]
+                                        ['contactNumber'],
+                                    fontSize: 12,
+                                    color: Colors.grey),
                                 trailing: TextRegular(
                                     text: dropdownValue,
                                     fontSize: 12,
