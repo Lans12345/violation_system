@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:violation_system/widgets/drawer_widget.dart';
 import 'package:violation_system/widgets/text_widget.dart';
+import 'package:intl/intl.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
@@ -35,33 +37,57 @@ class AdminHome extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: SizedBox(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                      child: Card(
-                        child: ListTile(
-                          title: TextBold(
-                              text: 'Activity Title',
-                              fontSize: 14,
-                              color: Colors.black),
-                          subtitle: TextRegular(
-                              text: 'Name of Officer Incharge',
-                              fontSize: 11,
-                              color: Colors.grey),
-                          trailing: TextRegular(
-                              text: 'Date and Time',
-                              fontSize: 12,
-                              color: Colors.grey),
-                        ),
-                      ),
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Violations')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
                     );
-                  },
-                ),
-              ),
-            ),
+                  }
+
+                  final data = snapshot.requireData;
+                  return Expanded(
+                    child: SizedBox(
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            child: Card(
+                              child: ListTile(
+                                title: TextBold(
+                                    text: data.docs[index]['violation'],
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                subtitle: TextRegular(
+                                    text: data.docs[index]['name'],
+                                    fontSize: 11,
+                                    color: Colors.grey),
+                                trailing: TextRegular(
+                                    text: DateFormat.yMMMd().add_jm().format(
+                                        data.docs[index]['dateTime'].toDate()),
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
