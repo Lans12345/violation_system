@@ -41,7 +41,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
             Container(
               height: 50,
-              width: 350,
+              width: 325,
               decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black,

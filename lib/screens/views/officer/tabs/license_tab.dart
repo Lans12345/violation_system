@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +20,12 @@ class LicenseTab extends StatefulWidget {
 }
 
 class _LicenseTabState extends State<LicenseTab> {
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
   final platenumberController = TextEditingController();
   final vehicledescriptionController = TextEditingController();
   final locationController = TextEditingController();
@@ -32,6 +42,52 @@ class _LicenseTabState extends State<LicenseTab> {
   late String vehicle = 'Car';
 
   final licenseController = TextEditingController();
+
+  double lat = 0;
+  double long = 0;
+
+  getLocation() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude;
+    });
+  }
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  late LatLng violationCoordinates = LatLng(lat, long);
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(10.640739, 122.968956),
+    zoom: 14.4746,
+  );
+
+  addMarker(lat, lang) {
+    Marker mark1 = Marker(
+        onDragEnd: (value) {
+          setState(() {
+            violationCoordinates = value;
+          });
+        },
+        draggable: true,
+        markerId: const MarkerId('mark1'),
+        infoWindow: const InfoWindow(
+          title: 'Your Current Location',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
+  Set<Marker> markers = {};
+
+  GoogleMapController? mapController;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +189,21 @@ class _LicenseTabState extends State<LicenseTab> {
                           const SizedBox(
                             height: 10,
                           ),
+                          SizedBox(
+                            height: 300,
+                            child: GoogleMap(
+                              markers: markers,
+                              mapType: MapType.normal,
+                              initialCameraPosition: _kGooglePlex,
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                                setState(() {
+                                  addMarker(lat, long);
+                                  mapController = controller;
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -154,7 +225,9 @@ class _LicenseTabState extends State<LicenseTab> {
                             licenseController.text,
                             platenumberController.text,
                             vehicledescriptionController.text,
-                            locationController.text);
+                            locationController.text,
+                            violationCoordinates.latitude,
+                            violationCoordinates.longitude);
 
                         Navigator.of(context).pop(true);
                         showDialog(
