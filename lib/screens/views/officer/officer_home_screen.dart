@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
@@ -57,6 +60,14 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
       .snapshots();
 
   var _value = false;
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(10.640739, 122.968956),
+    zoom: 14.4746,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +189,17 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                     controller: locationController),
                                 const SizedBox(
                                   height: 10,
+                                ),
+                                SizedBox(
+                                  height: 300,
+                                  child: GoogleMap(
+                                    mapType: MapType.hybrid,
+                                    initialCameraPosition: _kGooglePlex,
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
