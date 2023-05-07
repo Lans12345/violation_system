@@ -75,6 +75,7 @@ class _HomeTabState extends State<HomeTab> {
                     .where('licenseNumber',
                         isLessThan:
                             '${toBeginningOfSentenceCase(nameSearched)}z')
+                    .where('status', isEqualTo: 'Accepted')
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

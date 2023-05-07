@@ -40,6 +40,7 @@ class AdminHome extends StatelessWidget {
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Violations')
+                    .where('status', isEqualTo: 'Accepted')
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

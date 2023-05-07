@@ -103,6 +103,7 @@ class ProfileTab extends StatelessWidget {
                               .where('officerId',
                                   isEqualTo:
                                       FirebaseAuth.instance.currentUser!.uid)
+                              .where('status', isEqualTo: 'Accepted')
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
