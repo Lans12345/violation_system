@@ -24,6 +24,11 @@ class OfficerHomeScreen extends StatefulWidget {
 }
 
 class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   int _currentIndex = 0;
 
   final List<Widget> _children = [
@@ -68,6 +73,24 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
     target: LatLng(10.640739, 122.968956),
     zoom: 14.4746,
   );
+
+  addMarker(lat, lang) {
+    Marker mark1 = Marker(
+        onDrag: (value) {
+          print(value);
+        },
+        draggable: true,
+        markerId: const MarkerId('mark1'),
+        infoWindow: const InfoWindow(
+          title: 'Your Current Location',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
+  Set<Marker> markers = {};
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +216,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                 SizedBox(
                                   height: 300,
                                   child: GoogleMap(
-                                    mapType: MapType.hybrid,
+                                    mapType: MapType.normal,
                                     initialCameraPosition: _kGooglePlex,
                                     onMapCreated:
                                         (GoogleMapController controller) {
