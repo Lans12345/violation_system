@@ -83,7 +83,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
           title: 'Your Current Location',
         ),
         icon: BitmapDescriptor.defaultMarker,
-        position: LatLng(lat, lang));
+        position: const LatLng(10.640739, 122.968956));
 
     markers.add(mark1);
   }
