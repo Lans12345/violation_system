@@ -467,6 +467,7 @@ class _LicenseTabState extends State<LicenseTab> {
                         .collection('Violations')
                         .where('licenseNumber',
                             isEqualTo: widget.userDetails['licenseNumber'])
+                        .where('status', isEqualTo: 'Accepted')
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
