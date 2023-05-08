@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,9 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  final double maxDelta = 0.001;
+
+  final Random rng = Random();
   Set<Marker> markers = {};
 
   final Completer<GoogleMapController> _controller =
@@ -33,8 +37,23 @@ class _AdminHomeState extends State<AdminHome> {
     markers.add(mark1);
   }
 
+  addMarker2(lat, lang) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: const MarkerId('runaway'),
+        infoWindow: const InfoWindow(
+          title: 'Possible runaway of violator',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
+    final double longDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
@@ -121,6 +140,11 @@ class _AdminHomeState extends State<AdminHome> {
                                                       data.docs[index]['lat'],
                                                       data.docs[index]['long'],
                                                       data.docs[index]);
+                                                  addMarker2(
+                                                      data.docs[index]['lat'] +
+                                                          latDelta,
+                                                      data.docs[index]['long'] +
+                                                          longDelta);
                                                 });
                                               },
                                             ),

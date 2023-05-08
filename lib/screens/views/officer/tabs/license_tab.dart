@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -102,8 +103,27 @@ class _LicenseTabState extends State<LicenseTab> {
 
   GoogleMapController? mapController;
 
+  final double maxDelta = 0.001;
+
+  final Random rng = Random();
+
+  addMarker2(lat, lang) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: const MarkerId('runaway'),
+        infoWindow: const InfoWindow(
+          title: 'Possible runaway of violator',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
+    final double longDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 240, 23, 95),
@@ -537,6 +557,13 @@ class _LicenseTabState extends State<LicenseTab> {
                                                         data.docs[index]
                                                             ['long'],
                                                         data.docs[index]);
+                                                    addMarker2(
+                                                        data.docs[index]
+                                                                ['lat'] +
+                                                            latDelta,
+                                                        data.docs[index]
+                                                                ['long'] +
+                                                            longDelta);
                                                   });
                                                 },
                                               ),
