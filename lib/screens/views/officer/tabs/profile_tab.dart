@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,8 +34,27 @@ class _ProfileTabState extends State<ProfileTab> {
     markers.add(mark1);
   }
 
+  final double maxDelta = 0.001;
+
+  final Random rng = Random();
+
+  addMarker2(lat, lang) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: const MarkerId('runaway'),
+        infoWindow: const InfoWindow(
+          title: 'Possible runaway of violator',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
+    final double longDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
         .collection('Officers')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -191,6 +211,13 @@ class _ProfileTabState extends State<ProfileTab> {
                                                               data.docs[index]
                                                                   ['long'],
                                                               data.docs[index]);
+                                                          addMarker2(
+                                                              data.docs[index]
+                                                                      ['lat'] +
+                                                                  latDelta,
+                                                              data.docs[index]
+                                                                      ['long'] +
+                                                                  longDelta);
                                                         });
                                                       },
                                                     ),
