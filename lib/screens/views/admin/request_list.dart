@@ -43,12 +43,12 @@ class RequestListScreen extends StatelessWidget {
               final data = snapshot.requireData;
               return DataTable(columns: [
                 DataColumn(
-                  label: TextBold(
-                      text: 'Officer', fontSize: 16, color: Colors.black),
+                  label:
+                      TextBold(text: 'Name', fontSize: 16, color: Colors.black),
                 ),
                 DataColumn(
                   label: TextBold(
-                      text: 'Details', fontSize: 16, color: Colors.black),
+                      text: 'Violation', fontSize: 16, color: Colors.black),
                 ),
                 DataColumn(
                   label: TextBold(text: '', fontSize: 0, color: Colors.black),
@@ -58,13 +58,13 @@ class RequestListScreen extends StatelessWidget {
                   DataRow(cells: [
                     DataCell(
                       TextBold(
-                          text: 'Name of Officer',
+                          text: data.docs[i]['name'],
                           fontSize: 12,
                           color: Colors.grey),
                     ),
                     DataCell(
                       TextRegular(
-                          text: 'Details of Request',
+                          text: data.docs[i]['violation'],
                           fontSize: 12,
                           color: Colors.grey),
                     ),
