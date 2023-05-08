@@ -1,11 +1,37 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
+
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  Set<Marker> markers = {};
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  addMarker(lat, lang, data) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: MarkerId(data['name']),
+        infoWindow: const InfoWindow(
+          title: 'Location of incident',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +159,56 @@ class ProfileTab extends StatelessWidget {
                                         const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                     child: Card(
                                       child: ListTile(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  content: SizedBox(
+                                                    height: 500,
+                                                    child: GoogleMap(
+                                                      markers: markers,
+                                                      mapType: MapType.normal,
+                                                      initialCameraPosition:
+                                                          CameraPosition(
+                                                              target: LatLng(
+                                                                  data.docs[
+                                                                          index]
+                                                                      ['lat'],
+                                                                  data.docs[
+                                                                          index]
+                                                                      ['long']),
+                                                              zoom: 16),
+                                                      onMapCreated:
+                                                          (GoogleMapController
+                                                              controller) {
+                                                        _controller.complete(
+                                                            controller);
+                                                        setState(() {
+                                                          addMarker(
+                                                              data.docs[index]
+                                                                  ['lat'],
+                                                              data.docs[index]
+                                                                  ['long'],
+                                                              data.docs[index]);
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: TextBold(
+                                                          text: 'Close',
+                                                          fontSize: 12,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
                                         title: TextBold(
                                             text: data.docs[index]['violation'],
                                             fontSize: 14,

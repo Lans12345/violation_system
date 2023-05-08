@@ -1,10 +1,36 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
 
-class ToplistTab extends StatelessWidget {
+class ToplistTab extends StatefulWidget {
   const ToplistTab({super.key});
+
+  @override
+  State<ToplistTab> createState() => _ToplistTabState();
+}
+
+class _ToplistTabState extends State<ToplistTab> {
+  Set<Marker> markers = {};
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  addMarker(lat, lang, data) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: MarkerId(data['name']),
+        infoWindow: const InfoWindow(
+          title: 'Location of incident',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +76,51 @@ class ToplistTab extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                             child: Card(
                               child: ListTile(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: SizedBox(
+                                            height: 500,
+                                            child: GoogleMap(
+                                              markers: markers,
+                                              mapType: MapType.normal,
+                                              initialCameraPosition:
+                                                  CameraPosition(
+                                                      target: LatLng(
+                                                          data.docs[index]
+                                                              ['lat'],
+                                                          data.docs[index]
+                                                              ['long']),
+                                                      zoom: 16),
+                                              onMapCreated: (GoogleMapController
+                                                  controller) {
+                                                _controller
+                                                    .complete(controller);
+                                                setState(() {
+                                                  addMarker(
+                                                      data.docs[index]['lat'],
+                                                      data.docs[index]['long'],
+                                                      data.docs[index]);
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: TextBold(
+                                                  text: 'Close',
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                                 title: TextBold(
                                     text: data.docs[index]['location'],
                                     fontSize: 14,
