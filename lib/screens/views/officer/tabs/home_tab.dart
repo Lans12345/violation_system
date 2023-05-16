@@ -110,14 +110,18 @@ class _HomeTabState extends State<HomeTab> {
                                           )));
                                 },
                                 title: TextBold(
-                                    text: violationData['licenseNumber'],
+                                    text: data.docs[index]['violation'],
                                     fontSize: 14,
                                     color: Colors.black),
                                 subtitle: TextRegular(
-                                    text: violationData['name'],
+                                    text: data.docs[index]['name'],
                                     fontSize: 11,
                                     color: Colors.grey),
-                                trailing: const Icon(Icons.arrow_forward),
+                                trailing: TextRegular(
+                                    text: DateFormat.yMMMd().add_jm().format(
+                                        data.docs[index]['dateTime'].toDate()),
+                                    fontSize: 12,
+                                    color: Colors.grey),
                               ),
                             ),
                           );
