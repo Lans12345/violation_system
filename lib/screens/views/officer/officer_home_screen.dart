@@ -11,6 +11,7 @@ import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
+import 'package:violation_system/services/add_toplist.dart';
 import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
@@ -265,27 +266,51 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                           ),
                           MaterialButton(
                             onPressed: () async {
-                              Navigator.of(context).pop();
-                              addViolation(
-                                  vehicle,
-                                  nameController.text,
-                                  genderController.text,
-                                  ageController.text,
-                                  violationController.text,
-                                  licenseController.text,
-                                  platenumberController.text,
-                                  vehicledescriptionController.text,
-                                  locationController.text,
-                                  violationCoordinates.latitude,
-                                  violationCoordinates.longitude);
-                              locationController.clear();
-                              vehicledescriptionController.clear();
-                              platenumberController.clear();
-                              ageController.clear();
-                              nameController.clear();
-                              violationController.clear();
-                              genderController.clear();
-                              showToast('Violation Added!');
+                              if (_currentIndex == 1) {
+                                Navigator.of(context).pop();
+                                addTopList(
+                                    vehicle,
+                                    nameController.text,
+                                    genderController.text,
+                                    ageController.text,
+                                    violationController.text,
+                                    licenseController.text,
+                                    platenumberController.text,
+                                    vehicledescriptionController.text,
+                                    locationController.text,
+                                    violationCoordinates.latitude,
+                                    violationCoordinates.longitude);
+                                locationController.clear();
+                                vehicledescriptionController.clear();
+                                platenumberController.clear();
+                                ageController.clear();
+                                nameController.clear();
+                                violationController.clear();
+                                genderController.clear();
+                                showToast('Top List Added!');
+                              } else {
+                                Navigator.of(context).pop();
+                                addViolation(
+                                    vehicle,
+                                    nameController.text,
+                                    genderController.text,
+                                    ageController.text,
+                                    violationController.text,
+                                    licenseController.text,
+                                    platenumberController.text,
+                                    vehicledescriptionController.text,
+                                    locationController.text,
+                                    violationCoordinates.latitude,
+                                    violationCoordinates.longitude);
+                                locationController.clear();
+                                vehicledescriptionController.clear();
+                                platenumberController.clear();
+                                ageController.clear();
+                                nameController.clear();
+                                violationController.clear();
+                                genderController.clear();
+                                showToast('Violation Added!');
+                              }
                             },
                             child: TextBold(
                                 text: 'Continue',

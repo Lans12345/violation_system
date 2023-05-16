@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future addViolation(car, name, gender, age, violation, licenseNumber,
-    plateNumber, vehicleDescription, location, lat, long) async {
-  final docUser = FirebaseFirestore.instance.collection('Violations').doc();
+Future addTopList(car, name, gender, age, violation, licenseNumber, plateNumber,
+    vehicleDescription, location, lat, long) async {
+  final docUser = FirebaseFirestore.instance.collection('Top List').doc();
 
   final json = {
     'name': name,
@@ -20,7 +20,7 @@ Future addViolation(car, name, gender, age, violation, licenseNumber,
     'id': docUser.id,
     'dateTime': DateTime.now(),
     'officerId': FirebaseAuth.instance.currentUser!.uid,
-    'status': 'Accepted'
+    'status': 'Pending'
   };
 
   await docUser.set(json);

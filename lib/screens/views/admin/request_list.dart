@@ -21,7 +21,7 @@ class RequestListScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                .collection('Violations')
+                .collection('Top List')
                 .where('status', isEqualTo: 'Pending')
                 .snapshots(),
             builder:
@@ -77,7 +77,7 @@ class RequestListScreen extends StatelessWidget {
                             IconButton(
                               onPressed: () async {
                                 await FirebaseFirestore.instance
-                                    .collection('Violations')
+                                    .collection('Top List')
                                     .doc(data.docs[i].id)
                                     .update({'status': 'Accepted'});
                                 showToast('Request accepted!');
@@ -91,7 +91,7 @@ class RequestListScreen extends StatelessWidget {
                             IconButton(
                               onPressed: () async {
                                 await FirebaseFirestore.instance
-                                    .collection('Violations')
+                                    .collection('Top List')
                                     .doc(data.docs[i].id)
                                     .update({'status': 'Rejected'});
                                 showToast('Request rejected!');

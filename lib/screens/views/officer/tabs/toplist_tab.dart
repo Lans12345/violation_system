@@ -67,7 +67,7 @@ class _ToplistTabState extends State<ToplistTab> {
             ),
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('Violations')
+                    .collection('Top List')
                     .where('status', isEqualTo: 'Accepted')
                     .snapshots(),
                 builder: (BuildContext context,
