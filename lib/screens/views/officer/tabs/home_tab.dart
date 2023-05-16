@@ -67,10 +67,10 @@ class _HomeTabState extends State<HomeTab> {
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Violations')
-                    .where('licenseNumber',
+                    .where('name',
                         isGreaterThanOrEqualTo:
                             toBeginningOfSentenceCase(nameSearched))
-                    .where('licenseNumber',
+                    .where('name',
                         isLessThan:
                             '${toBeginningOfSentenceCase(nameSearched)}z')
                     .where('status', isEqualTo: 'Accepted')
