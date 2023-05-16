@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/drawer_widget.dart';
@@ -63,27 +64,63 @@ class _OfficerStatusScreenState extends State<OfficerStatusScreen> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: SizedBox(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                      child: Card(
-                        child: ListTile(
-                          title: TextBold(
-                              text: 'Officer Name',
-                              fontSize: 14,
-                              color: Colors.black),
-                          trailing: TextRegular(
-                              text: 'Status', fontSize: 12, color: Colors.grey),
-                        ),
-                      ),
+            StreamBuilder<QuerySnapshot>(
+                stream: dropdownValue == 'Active'
+                    ? FirebaseFirestore.instance
+                        .collection('Officers')
+                        .where('isActive', isEqualTo: true)
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('Officers')
+                        .where('isActive', isEqualTo: false)
+                        .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
                     );
-                  },
-                ),
-              ),
-            ),
+                  }
+
+                  final officerData = snapshot.requireData;
+                  return Expanded(
+                    child: SizedBox(
+                      child: ListView.builder(
+                        itemCount: officerData.docs.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            child: Card(
+                              child: ListTile(
+                                title: TextBold(
+                                    text: officerData.docs[index]['name'],
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                subtitle: TextRegular(
+                                    text: officerData.docs[index]
+                                        ['contactNumber'],
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                                trailing: TextRegular(
+                                    text: dropdownValue,
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),

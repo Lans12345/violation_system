@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
@@ -21,6 +25,13 @@ class OfficerHomeScreen extends StatefulWidget {
 }
 
 class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    determinePosition();
+    getLocation();
+  }
+
   int _currentIndex = 0;
 
   final List<Widget> _children = [
@@ -36,6 +47,51 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
     });
   }
 
+  double lat = 0;
+  double long = 0;
+
+  getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude;
+    });
+  }
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(10.640739, 122.968956),
+    zoom: 14.4746,
+  );
+
+  late LatLng violationCoordinates = LatLng(lat, long);
+
+  addMarker(lat, lang) {
+    Marker mark1 = Marker(
+        onDragEnd: (value) {
+          setState(() {
+            violationCoordinates = value;
+          });
+        },
+        draggable: true,
+        markerId: const MarkerId('mark1'),
+        infoWindow: const InfoWindow(
+          title: 'Your Current Location',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: const LatLng(10.640739, 122.968956));
+
+    markers.add(mark1);
+  }
+
+  Set<Marker> markers = {};
+
+  GoogleMapController? mapController;
+
   final platenumberController = TextEditingController();
   final vehicledescriptionController = TextEditingController();
   final locationController = TextEditingController();
@@ -50,6 +106,13 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   List vehicles = ['Car', 'Motorcycle', 'Bus', 'Jeep', 'Van'];
 
   late String vehicle = 'Car';
+
+  final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+      .collection('Officers')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
+
+  var _value = false;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +235,22 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
+                                SizedBox(
+                                  height: 300,
+                                  child: GoogleMap(
+                                    markers: markers,
+                                    mapType: MapType.normal,
+                                    initialCameraPosition: _kGooglePlex,
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                      setState(() {
+                                        addMarker(lat, long);
+                                        mapController = controller;
+                                      });
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                           );
@@ -196,7 +275,9 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                   licenseController.text,
                                   platenumberController.text,
                                   vehicledescriptionController.text,
-                                  locationController.text);
+                                  locationController.text,
+                                  violationCoordinates.latitude,
+                                  violationCoordinates.longitude);
                               locationController.clear();
                               vehicledescriptionController.clear();
                               platenumberController.clear();
@@ -314,7 +395,49 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                     Icons.logout,
                     color: Colors.white,
                   ),
-                )
+                ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: userData,
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong'));
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const SizedBox();
+                }
+                dynamic data = snapshot.data;
+                return Container(
+                  padding: const EdgeInsets.only(right: 20),
+                  width: 50,
+                  child: SwitchListTile(
+                    value: data['isActive'],
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                        if (_value == true) {
+                          FirebaseFirestore.instance
+                              .collection('Officers')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'isActive': true,
+                          });
+                          showToast('Status: Active');
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection('Officers')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'isActive': false,
+                          });
+                          showToast('Status: Inactive');
+                        }
+                      });
+                    },
+                  ),
+                );
+              }),
         ],
       ),
       body: _children[_currentIndex],
@@ -345,5 +468,42 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
         ],
       ),
     );
+  }
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }

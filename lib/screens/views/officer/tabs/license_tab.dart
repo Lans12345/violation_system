@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +21,25 @@ class LicenseTab extends StatefulWidget {
 }
 
 class _LicenseTabState extends State<LicenseTab> {
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
+  addMarker1(lat, lang, data) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: MarkerId(data['name']),
+        infoWindow: const InfoWindow(
+          title: 'Location of incident',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
   final platenumberController = TextEditingController();
   final vehicledescriptionController = TextEditingController();
   final locationController = TextEditingController();
@@ -33,8 +57,73 @@ class _LicenseTabState extends State<LicenseTab> {
 
   final licenseController = TextEditingController();
 
+  double lat = 0;
+  double long = 0;
+
+  getLocation() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude;
+    });
+  }
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  late LatLng violationCoordinates = LatLng(lat, long);
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(10.640739, 122.968956),
+    zoom: 14.4746,
+  );
+
+  addMarker(lat, lang) {
+    Marker mark1 = Marker(
+        onDragEnd: (value) {
+          setState(() {
+            violationCoordinates = value;
+          });
+        },
+        draggable: true,
+        markerId: const MarkerId('mark1'),
+        infoWindow: const InfoWindow(
+          title: 'Your Current Location',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: const LatLng(10.640739, 122.968956));
+
+    markers.add(mark1);
+  }
+
+  Set<Marker> markers = {};
+
+  GoogleMapController? mapController;
+
+  final double maxDelta = 0.001;
+
+  final Random rng = Random();
+
+  addMarker2(lat, lang) {
+    Marker mark1 = Marker(
+        draggable: true,
+        markerId: const MarkerId('runaway'),
+        infoWindow: const InfoWindow(
+          title: 'Possible runaway of violator',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lang));
+
+    markers.add(mark1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
+    final double longDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 240, 23, 95),
@@ -133,6 +222,21 @@ class _LicenseTabState extends State<LicenseTab> {
                           const SizedBox(
                             height: 10,
                           ),
+                          SizedBox(
+                            height: 300,
+                            child: GoogleMap(
+                              markers: markers,
+                              mapType: MapType.normal,
+                              initialCameraPosition: _kGooglePlex,
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                                setState(() {
+                                  addMarker(lat, long);
+                                  mapController = controller;
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -154,7 +258,9 @@ class _LicenseTabState extends State<LicenseTab> {
                             licenseController.text,
                             platenumberController.text,
                             vehicledescriptionController.text,
-                            locationController.text);
+                            locationController.text,
+                            violationCoordinates.latitude,
+                            violationCoordinates.longitude);
 
                         Navigator.of(context).pop(true);
                         showDialog(
@@ -394,6 +500,7 @@ class _LicenseTabState extends State<LicenseTab> {
                         .collection('Violations')
                         .where('licenseNumber',
                             isEqualTo: widget.userDetails['licenseNumber'])
+                        .where('status', isEqualTo: 'Accepted')
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -421,6 +528,60 @@ class _LicenseTabState extends State<LicenseTab> {
                               padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                               child: Card(
                                 child: ListTile(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content: SizedBox(
+                                              height: 500,
+                                              child: GoogleMap(
+                                                markers: markers,
+                                                mapType: MapType.normal,
+                                                initialCameraPosition:
+                                                    CameraPosition(
+                                                        target: LatLng(
+                                                            data.docs[index]
+                                                                ['lat'],
+                                                            data.docs[index]
+                                                                ['long']),
+                                                        zoom: 16),
+                                                onMapCreated:
+                                                    (GoogleMapController
+                                                        controller) {
+                                                  _controller
+                                                      .complete(controller);
+                                                  setState(() {
+                                                    addMarker1(
+                                                        data.docs[index]['lat'],
+                                                        data.docs[index]
+                                                            ['long'],
+                                                        data.docs[index]);
+                                                    addMarker2(
+                                                        data.docs[index]
+                                                                ['lat'] +
+                                                            latDelta,
+                                                        data.docs[index]
+                                                                ['long'] +
+                                                            longDelta);
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: TextBold(
+                                                    text: 'Close',
+                                                    fontSize: 12,
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
                                   title: TextBold(
                                       text: data.docs[index]['violation'],
                                       fontSize: 14,
