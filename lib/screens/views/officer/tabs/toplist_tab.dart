@@ -101,35 +101,89 @@ class _ToplistTabState extends State<ToplistTab> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          content: SizedBox(
-                                            height: 500,
-                                            child: GoogleMap(
-                                              markers: markers,
-                                              mapType: MapType.normal,
-                                              initialCameraPosition:
-                                                  CameraPosition(
-                                                      target: LatLng(
-                                                          data.docs[index]
-                                                              ['lat'],
-                                                          data.docs[index]
-                                                              ['long']),
-                                                      zoom: 16),
-                                              onMapCreated: (GoogleMapController
-                                                  controller) {
-                                                _controller
-                                                    .complete(controller);
-                                                setState(() {
-                                                  addMarker(
-                                                      data.docs[index]['lat'],
-                                                      data.docs[index]['long'],
-                                                      data.docs[index]);
-                                                  addMarker2(
-                                                      data.docs[index]['lat'] +
-                                                          latDelta,
-                                                      data.docs[index]['long'] +
-                                                          longDelta);
-                                                });
-                                              },
+                                          content: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                _buildInfoRow(
+                                                    Icons.warning,
+                                                    'Violation',
+                                                    data.docs[index]
+                                                        ['violation']),
+                                                _buildInfoRow(
+                                                    Icons.person,
+                                                    'Name',
+                                                    data.docs[index]['name']),
+                                                _buildInfoRow(
+                                                    Icons.directions_car,
+                                                    'Vehicle Type',
+                                                    data.docs[index]['car']),
+                                                _buildInfoRow(
+                                                    Icons.numbers,
+                                                    'Vehicle Description',
+                                                    data.docs[index]
+                                                        ['vehicleDescription']),
+                                                _buildInfoRow(
+                                                    Icons.numbers,
+                                                    'Plate Number',
+                                                    data.docs[index]
+                                                        ['plateNumber']),
+                                                _buildInfoRow(
+                                                    Icons.format_list_numbered,
+                                                    'License Number',
+                                                    data.docs[index]
+                                                        ['licenseNumber']),
+                                                _buildInfoRow(
+                                                  Icons.timelapse,
+                                                  'Date and Time',
+                                                  DateFormat.yMMMd()
+                                                      .add_jm()
+                                                      .format(data.docs[index]
+                                                              ['dateTime']
+                                                          .toDate()),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                SizedBox(
+                                                  height: 300,
+                                                  child: GoogleMap(
+                                                    markers: markers,
+                                                    mapType: MapType.normal,
+                                                    initialCameraPosition:
+                                                        CameraPosition(
+                                                            target: LatLng(
+                                                                data.docs[index]
+                                                                    ['lat'],
+                                                                data.docs[index]
+                                                                    ['long']),
+                                                            zoom: 16),
+                                                    onMapCreated:
+                                                        (GoogleMapController
+                                                            controller) {
+                                                      _controller
+                                                          .complete(controller);
+                                                      setState(() {
+                                                        addMarker(
+                                                            data.docs[index]
+                                                                ['lat'],
+                                                            data.docs[index]
+                                                                ['long'],
+                                                            data.docs[index]);
+                                                        addMarker2(
+                                                            data.docs[index]
+                                                                    ['lat'] +
+                                                                latDelta,
+                                                            data.docs[index]
+                                                                    ['long'] +
+                                                                longDelta);
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           actions: [
@@ -169,6 +223,29 @@ class _ToplistTabState extends State<ToplistTab> {
                 }),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData iconData, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(iconData, color: Colors.blue),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(label, style: const TextStyle(color: Colors.grey)),
+                const SizedBox(height: 4.0),
+                Text(value),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
