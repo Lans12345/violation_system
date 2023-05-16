@@ -28,9 +28,7 @@ class _HomeTabState extends State<HomeTab> {
               height: 30,
             ),
             TextBold(
-                text: 'Welcome Officer\n      John Doe!',
-                fontSize: 32,
-                color: Colors.black),
+                text: 'Welcome Officer!', fontSize: 32, color: Colors.black),
             const SizedBox(
               height: 20,
             ),
