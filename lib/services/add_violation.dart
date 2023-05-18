@@ -18,7 +18,7 @@ Future addViolation(car, name, gender, age, violation, licenseNumber,
     'id': docUser.id,
     'dateTime': DateTime.now(),
     'officerId': FirebaseAuth.instance.currentUser!.uid,
-    'status': 'Accepted',
+    'status': 'Pending',
     'evidence': evidence,
     'owner': owner
   };

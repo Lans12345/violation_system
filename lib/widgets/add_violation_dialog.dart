@@ -385,7 +385,7 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
             nameController.clear();
             violationController.clear();
             genderController.clear();
-            showToast('Violation Added!');
+            showToast('Violation Added! Waiting for confirmation');
           },
           child: TextBold(text: 'Continue', color: Colors.black, fontSize: 14),
         ),
