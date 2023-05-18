@@ -67,6 +67,12 @@ class _RequestListScreenState extends State<RequestListScreen> {
                       ),
                       DataColumn(
                         label: TextBold(
+                            text: 'Officer Name',
+                            fontSize: 16,
+                            color: Colors.black),
+                      ),
+                      DataColumn(
+                        label: TextBold(
                             text: 'Date and Time',
                             fontSize: 16,
                             color: Colors.black),
@@ -121,6 +127,22 @@ class _RequestListScreenState extends State<RequestListScreen> {
                                     });
                               },
                               child: TextRegular(
+                                  text: data.docs[i]['myName'],
+                                  fontSize: 12,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                          DataCell(
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ViolationDialog(
+                                          data: data.docs[i]);
+                                    });
+                              },
+                              child: TextRegular(
                                   text: DateFormat.yMMMd().add_jm().format(
                                       data.docs[i]['dateTime'].toDate()),
                                   fontSize: 12,
@@ -151,7 +173,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
                                   IconButton(
                                     onPressed: () async {
                                       await FirebaseFirestore.instance
-                                          .collection('Top List')
+                                          .collection('Violations')
                                           .doc(data.docs[i].id)
                                           .update({'status': 'Rejected'});
                                       showToast('Violation rejected!');

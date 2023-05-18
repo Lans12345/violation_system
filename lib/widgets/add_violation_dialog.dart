@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +19,28 @@ class AddViolationDialog extends StatefulWidget {
 }
 
 class _AddViolationDialogState extends State<AddViolationDialog> {
+  @override
+  void initState() {
+    super.initState();
+    getMyName();
+  }
+
+  String myName = '';
+
+  getMyName() async {
+    FirebaseFirestore.instance
+        .collection('Officers')
+        .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          myName = doc['name'];
+        });
+      }
+    });
+  }
+
   late String fileName = '';
 
   late File imageFile;
@@ -377,7 +401,8 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
                 vehicledescriptionController.text,
                 locationController.text,
                 imageEvidence,
-                imageOwner);
+                imageOwner,
+                myName);
             locationController.clear();
             vehicledescriptionController.clear();
             platenumberController.clear();

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:violation_system/services/add_notif.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 
 import '../../../../widgets/text_widget.dart';
@@ -93,10 +92,10 @@ class ActiveTab extends StatelessWidget {
                                           onPressed: () {
                                             showToast(
                                                 "You've just waived at Officer ${officerData.docs[index]['name']}");
-                                            addNotif(
-                                                data['name'],
-                                                officerData.docs[index]['id'],
-                                                'Officer ${data['name']} waived at you!');
+                                            // addNotif(
+                                            //     data['name'],
+                                            //     officerData.docs[index]['id'],
+                                            //     'Officer ${data['name']} waived at you!');
                                           },
                                           icon: const Icon(
                                             Icons.waving_hand_rounded,
