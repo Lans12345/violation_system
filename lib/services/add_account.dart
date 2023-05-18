@@ -1,7 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future addAccount(String username, String name, String password,
-    String contactNumber, String gender, String age, String address, id) async {
+Future addAccount(
+    String username,
+    String name,
+    String password,
+    String contactNumber,
+    String gender,
+    String age,
+    String address,
+    id,
+    role) async {
   final docUser = FirebaseFirestore.instance.collection('Officers').doc(id);
 
   final json = {
@@ -15,6 +23,7 @@ Future addAccount(String username, String name, String password,
     'id': docUser.id,
     'isActive': false,
     'dateTime': DateTime.now(),
+    'role': role,
   };
 
   await docUser.set(json);

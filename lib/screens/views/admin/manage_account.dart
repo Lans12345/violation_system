@@ -32,6 +32,12 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
   late String gender = 'Male';
   final List<bool> _isSelected = [true, false];
 
+  List<String> users = ['Officer', 'Cashier', 'Driver'];
+
+  String user = 'Officer';
+
+  int _dropValue1 = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,6 +290,58 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
               height: 10,
             ),
             Padding(
+              padding: const EdgeInsets.fromLTRB(75, 0, 20, 0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: TextRegular(
+                    text: 'Type:', fontSize: 12, color: Colors.black),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: 300,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white)),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: DropdownButton(
+                    underline: const SizedBox(),
+                    dropdownColor: Colors.white,
+                    focusColor: Colors.white,
+                    value: _dropValue1,
+                    items: [
+                      for (int i = 0; i < users.length; i++)
+                        DropdownMenuItem(
+                          onTap: (() {
+                            user = users[i];
+                          }),
+                          value: i,
+                          child: Row(
+                            children: [
+                              TextRegular(
+                                  text: users[i],
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ],
+                          ),
+                        ),
+                    ],
+                    onChanged: ((value) {
+                      setState(() {
+                        _dropValue1 = int.parse(value.toString());
+                      });
+                    })),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
               padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
               child: TextFormField(
                 minLines: 3,
@@ -352,7 +410,8 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                                       gender,
                                       age,
                                       address,
-                                      user.user!.uid);
+                                      user.user!.uid,
+                                      user);
 
                                   showToast("Registered Succesfully!");
                                   Navigator.of(context).pushReplacement(

@@ -118,45 +118,31 @@ class _AdminHomeState extends State<AdminHome> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          content: SizedBox(
-                                            height: 500,
-                                            child: GoogleMap(
-                                              markers: markers,
-                                              mapType: MapType.normal,
-                                              initialCameraPosition:
-                                                  CameraPosition(
-                                                      target: LatLng(
-                                                          data.docs[index]
-                                                              ['lat'],
-                                                          data.docs[index]
-                                                              ['long']),
-                                                      zoom: 16),
-                                              onMapCreated: (GoogleMapController
-                                                  controller) {
-                                                _controller
-                                                    .complete(controller);
-                                                setState(() {
-                                                  addMarker(
-                                                      data.docs[index]['lat'],
-                                                      data.docs[index]['long'],
-                                                      data.docs[index]);
-                                                  addMarker2(
-                                                      data.docs[index]['lat'] +
-                                                          latDelta,
-                                                      data.docs[index]['long'] +
-                                                          longDelta);
-                                                });
-                                              },
-                                            ),
+                                          title: TextBold(
+                                              text: data.docs[index]
+                                                  ['violation'],
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
                                           ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: TextBold(
+                                              child: TextRegular(
                                                   text: 'Close',
                                                   fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: TextBold(
+                                                  text: 'Update',
+                                                  fontSize: 14,
                                                   color: Colors.black),
                                             ),
                                           ],
