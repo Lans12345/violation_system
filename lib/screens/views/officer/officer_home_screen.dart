@@ -7,11 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
-import 'package:violation_system/screens/views/officer/tabs/active_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
-import 'package:violation_system/screens/views/officer/tabs/toplist_tab.dart';
-import 'package:violation_system/services/add_toplist.dart';
 import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
@@ -37,8 +34,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
 
   final List<Widget> _children = [
     const HomeTab(),
-    const ToplistTab(),
-    const ActiveTab(),
     const ProfileTab(),
   ];
 
@@ -118,7 +113,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _currentIndex == 1 || _currentIndex == 0
+      floatingActionButton: _currentIndex == 0
           ? FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 240, 23, 95),
               child: const Icon(Icons.add),
@@ -236,22 +231,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                SizedBox(
-                                  height: 300,
-                                  child: GoogleMap(
-                                    markers: markers,
-                                    mapType: MapType.normal,
-                                    initialCameraPosition: _kGooglePlex,
-                                    onMapCreated:
-                                        (GoogleMapController controller) {
-                                      _controller.complete(controller);
-                                      setState(() {
-                                        addMarker(lat, long);
-                                        mapController = controller;
-                                      });
-                                    },
-                                  ),
-                                ),
                               ],
                             ),
                           );
@@ -266,51 +245,27 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                           ),
                           MaterialButton(
                             onPressed: () async {
-                              if (_currentIndex == 1) {
-                                Navigator.of(context).pop();
-                                addTopList(
-                                    vehicle,
-                                    nameController.text,
-                                    genderController.text,
-                                    ageController.text,
-                                    violationController.text,
-                                    licenseController.text,
-                                    platenumberController.text,
-                                    vehicledescriptionController.text,
-                                    locationController.text,
-                                    violationCoordinates.latitude,
-                                    violationCoordinates.longitude);
-                                locationController.clear();
-                                vehicledescriptionController.clear();
-                                platenumberController.clear();
-                                ageController.clear();
-                                nameController.clear();
-                                violationController.clear();
-                                genderController.clear();
-                                showToast('Top List Added!');
-                              } else {
-                                Navigator.of(context).pop();
-                                addViolation(
-                                    vehicle,
-                                    nameController.text,
-                                    genderController.text,
-                                    ageController.text,
-                                    violationController.text,
-                                    licenseController.text,
-                                    platenumberController.text,
-                                    vehicledescriptionController.text,
-                                    locationController.text,
-                                    violationCoordinates.latitude,
-                                    violationCoordinates.longitude);
-                                locationController.clear();
-                                vehicledescriptionController.clear();
-                                platenumberController.clear();
-                                ageController.clear();
-                                nameController.clear();
-                                violationController.clear();
-                                genderController.clear();
-                                showToast('Violation Added!');
-                              }
+                              Navigator.of(context).pop();
+                              addViolation(
+                                  vehicle,
+                                  nameController.text,
+                                  genderController.text,
+                                  ageController.text,
+                                  violationController.text,
+                                  licenseController.text,
+                                  platenumberController.text,
+                                  vehicledescriptionController.text,
+                                  locationController.text,
+                                  violationCoordinates.latitude,
+                                  violationCoordinates.longitude);
+                              locationController.clear();
+                              vehicledescriptionController.clear();
+                              platenumberController.clear();
+                              ageController.clear();
+                              nameController.clear();
+                              violationController.clear();
+                              genderController.clear();
+                              showToast('Violation Added!');
                             },
                             child: TextBold(
                                 text: 'Continue',
@@ -335,7 +290,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
             color: Colors.white),
         centerTitle: true,
         actions: [
-          _currentIndex != 3
+          _currentIndex != 1
               ? IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -477,14 +432,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Top List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.online_prediction),
-            label: 'Active',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
