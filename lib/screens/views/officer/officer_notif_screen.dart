@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../widgets/text_widget.dart';
@@ -28,8 +27,6 @@ class OfficerNotifScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('Notifs')
-              .where('officerId',
-                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               .orderBy('dateTime')
               .snapshots(),
           builder:

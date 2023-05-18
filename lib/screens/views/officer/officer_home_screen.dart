@@ -4,14 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/screens/auth/landing_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_notif_screen.dart';
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
-import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/add_violation_dialog.dart';
-import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 
 import '../../../widgets/text_widget.dart';
@@ -86,8 +83,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                   icon: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('Notifs')
-                          .where('officerId',
-                              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {

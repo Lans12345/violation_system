@@ -9,6 +9,8 @@ import 'package:violation_system/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:violation_system/widgets/view_violation_dialog.dart';
 
+import '../officer/officer_notif_screen.dart';
+
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
 
@@ -62,9 +64,43 @@ class _AdminHomeState extends State<AdminHome> {
         title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/logo.png'),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const OfficerNotifScreen()));
+            },
+            icon: StreamBuilder<QuerySnapshot>(
+                stream:
+                    FirebaseFirestore.instance.collection('Notifs').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final data = snapshot.requireData;
+                  return Badge(
+                    isLabelVisible: data.docs.isNotEmpty,
+                    label: TextRegular(
+                        text: data.docs.length.toString(),
+                        fontSize: 12,
+                        color: Colors.white),
+                    child: const Icon(
+                      Icons.notifications_outlined,
+                      color: Colors.white,
+                    ),
+                  );
+                }),
           )
         ],
       ),
