@@ -10,6 +10,7 @@ import 'package:violation_system/screens/views/officer/officer_notif_screen.dart
 import 'package:violation_system/screens/views/officer/tabs/home_tab.dart';
 import 'package:violation_system/screens/views/officer/tabs/profile_tab.dart';
 import 'package:violation_system/services/add_violation.dart';
+import 'package:violation_system/widgets/add_violation_dialog.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 
@@ -26,8 +27,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    determinePosition();
-    getLocation();
   }
 
   int _currentIndex = 0;
@@ -42,66 +41,6 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
       _currentIndex = index;
     });
   }
-
-  double lat = 0;
-  double long = 0;
-
-  getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    setState(() {
-      lat = position.latitude;
-      long = position.longitude;
-    });
-  }
-
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(10.640739, 122.968956),
-    zoom: 14.4746,
-  );
-
-  late LatLng violationCoordinates = LatLng(lat, long);
-
-  addMarker(lat, lang) {
-    Marker mark1 = Marker(
-        onDragEnd: (value) {
-          setState(() {
-            violationCoordinates = value;
-          });
-        },
-        draggable: true,
-        markerId: const MarkerId('mark1'),
-        infoWindow: const InfoWindow(
-          title: 'Your Current Location',
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-        position: const LatLng(10.640739, 122.968956));
-
-    markers.add(mark1);
-  }
-
-  Set<Marker> markers = {};
-
-  GoogleMapController? mapController;
-
-  final platenumberController = TextEditingController();
-  final vehicledescriptionController = TextEditingController();
-  final locationController = TextEditingController();
-  final licenseController = TextEditingController();
-  final violationController = TextEditingController();
-  final nameController = TextEditingController();
-  final ageController = TextEditingController();
-  final genderController = TextEditingController();
-
-  var _dropValue1 = 0;
-
-  List vehicles = ['Car', 'Motorcycle', 'Bus', 'Jeep', 'Van'];
-
-  late String vehicle = 'Car';
 
   final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
       .collection('Officers')
@@ -121,159 +60,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        title: TextBold(
-                            text: 'Adding Violation',
-                            fontSize: 18,
-                            color: Colors.black),
-                        content: StatefulBuilder(builder: (context, setState) {
-                          return SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: TextRegular(
-                                      text: 'Vehicle Type',
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  width: 300,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.black)),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    child: DropdownButton(
-                                        dropdownColor: Colors.white,
-                                        focusColor: Colors.white,
-                                        value: _dropValue1,
-                                        items: [
-                                          for (int i = 0;
-                                              i < vehicles.length;
-                                              i++)
-                                            DropdownMenuItem(
-                                              onTap: (() {
-                                                vehicle = vehicles[i];
-                                              }),
-                                              value: i,
-                                              child: Row(
-                                                children: [
-                                                  TextRegular(
-                                                      text: '${vehicles[i]}',
-                                                      fontSize: 14,
-                                                      color: Colors.black),
-                                                ],
-                                              ),
-                                            ),
-                                        ],
-                                        onChanged: ((value) {
-                                          setState(() {
-                                            _dropValue1 =
-                                                int.parse(value.toString());
-                                          });
-                                        })),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Name', controller: nameController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Gender',
-                                    controller: genderController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Age', controller: ageController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Violation/s',
-                                    controller: violationController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'License Number',
-                                    controller: licenseController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Plate Number',
-                                    controller: platenumberController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Vehicle Description',
-                                    controller: vehicledescriptionController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFieldWidget(
-                                    label: 'Location',
-                                    controller: locationController),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                        actions: [
-                          MaterialButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: TextRegular(
-                                text: 'Close',
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          MaterialButton(
-                            onPressed: () async {
-                              Navigator.of(context).pop();
-                              addViolation(
-                                  vehicle,
-                                  nameController.text,
-                                  genderController.text,
-                                  ageController.text,
-                                  violationController.text,
-                                  licenseController.text,
-                                  platenumberController.text,
-                                  vehicledescriptionController.text,
-                                  locationController.text,
-                                  violationCoordinates.latitude,
-                                  violationCoordinates.longitude);
-                              locationController.clear();
-                              vehicledescriptionController.clear();
-                              platenumberController.clear();
-                              ageController.clear();
-                              nameController.clear();
-                              violationController.clear();
-                              genderController.clear();
-                              showToast('Violation Added!');
-                            },
-                            child: TextBold(
-                                text: 'Continue',
-                                color: Colors.black,
-                                fontSize: 14),
-                          ),
-                        ],
-                      );
+                      return const AddViolationDialog();
                     });
               },
             )
