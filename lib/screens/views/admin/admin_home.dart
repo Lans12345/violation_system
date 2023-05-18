@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/drawer_widget.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:violation_system/widgets/view_violation_dialog.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -117,36 +118,8 @@ class _AdminHomeState extends State<AdminHome> {
                                   showDialog(
                                       context: context,
                                       builder: (context) {
-                                        return AlertDialog(
-                                          title: TextBold(
-                                              text: data.docs[index]
-                                                  ['violation'],
-                                              fontSize: 18,
-                                              color: Colors.black),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: TextRegular(
-                                                  text: 'Close',
-                                                  fontSize: 12,
-                                                  color: Colors.grey),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: TextBold(
-                                                  text: 'Update',
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        );
+                                        return ViolationDialog(
+                                            data: data.docs[index]);
                                       });
                                 },
                                 title: TextBold(

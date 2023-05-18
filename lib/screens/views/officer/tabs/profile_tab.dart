@@ -179,63 +179,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                         const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                     child: Card(
                                       child: ListTile(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  content: SizedBox(
-                                                    height: 500,
-                                                    child: GoogleMap(
-                                                      markers: markers,
-                                                      mapType: MapType.normal,
-                                                      initialCameraPosition:
-                                                          CameraPosition(
-                                                              target: LatLng(
-                                                                  data.docs[
-                                                                          index]
-                                                                      ['lat'],
-                                                                  data.docs[
-                                                                          index]
-                                                                      ['long']),
-                                                              zoom: 16),
-                                                      onMapCreated:
-                                                          (GoogleMapController
-                                                              controller) {
-                                                        _controller.complete(
-                                                            controller);
-                                                        setState(() {
-                                                          addMarker(
-                                                              data.docs[index]
-                                                                  ['lat'],
-                                                              data.docs[index]
-                                                                  ['long'],
-                                                              data.docs[index]);
-                                                          addMarker2(
-                                                              data.docs[index]
-                                                                      ['lat'] +
-                                                                  latDelta,
-                                                              data.docs[index]
-                                                                      ['long'] +
-                                                                  longDelta);
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: TextBold(
-                                                          text: 'Close',
-                                                          fontSize: 12,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        },
+                                        onTap: () {},
                                         title: TextBold(
                                             text: data.docs[index]['violation'],
                                             fontSize: 14,

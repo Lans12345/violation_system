@@ -5,12 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:violation_system/services/add_violation.dart';
 import 'package:violation_system/widgets/add_violation_dialog.dart';
-import 'package:violation_system/widgets/toast_widget.dart';
 import 'package:intl/intl.dart';
 import '../../../../widgets/text_widget.dart';
-import '../../../../widgets/textfield_widget.dart';
 
 class LicenseTab extends StatefulWidget {
   final userDetails;
@@ -230,60 +227,7 @@ class _LicenseTabState extends State<LicenseTab> {
                               padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                               child: Card(
                                 child: ListTile(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content: SizedBox(
-                                              height: 500,
-                                              child: GoogleMap(
-                                                markers: markers,
-                                                mapType: MapType.normal,
-                                                initialCameraPosition:
-                                                    CameraPosition(
-                                                        target: LatLng(
-                                                            data.docs[index]
-                                                                ['lat'],
-                                                            data.docs[index]
-                                                                ['long']),
-                                                        zoom: 16),
-                                                onMapCreated:
-                                                    (GoogleMapController
-                                                        controller) {
-                                                  _controller
-                                                      .complete(controller);
-                                                  setState(() {
-                                                    addMarker1(
-                                                        data.docs[index]['lat'],
-                                                        data.docs[index]
-                                                            ['long'],
-                                                        data.docs[index]);
-                                                    addMarker2(
-                                                        data.docs[index]
-                                                                ['lat'] +
-                                                            latDelta,
-                                                        data.docs[index]
-                                                                ['long'] +
-                                                            longDelta);
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: TextBold(
-                                                    text: 'Close',
-                                                    fontSize: 12,
-                                                    color: Colors.black),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
+                                  onTap: () {},
                                   title: TextBold(
                                       text: data.docs[index]['violation'],
                                       fontSize: 14,
