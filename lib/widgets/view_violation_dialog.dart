@@ -69,6 +69,7 @@ class ViolationDialog extends StatelessWidget {
                 buildInfoRow('Gender:', data['gender']),
                 buildInfoRow('Age:', data['age'].toString()),
                 buildInfoRow('Violation:', data['violation']),
+                buildInfoRow('Fine:', '₱${data['fee']}'),
                 buildInfoRow('License Number:', data['licenseNumber']),
                 buildInfoRow('Plate Number:', data['plateNumber']),
                 buildInfoRow(

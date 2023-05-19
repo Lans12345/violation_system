@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/add_violation_dialog.dart';
 import 'package:intl/intl.dart';
 import '../../../../widgets/text_widget.dart';
+import '../../../../widgets/view_violation_dialog.dart';
 
 class LicenseTab extends StatefulWidget {
   final userDetails;
@@ -227,7 +228,14 @@ class _LicenseTabState extends State<LicenseTab> {
                               padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                               child: Card(
                                 child: ListTile(
-                                  onTap: () {},
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return ViolationDialog(
+                                              data: data.docs[index]);
+                                        });
+                                  },
                                   title: TextBold(
                                       text: data.docs[index]['violation'],
                                       fontSize: 14,

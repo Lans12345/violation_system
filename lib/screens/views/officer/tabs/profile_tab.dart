@@ -8,6 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../widgets/view_violation_dialog.dart';
+
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
 
@@ -179,7 +181,14 @@ class _ProfileTabState extends State<ProfileTab> {
                                         const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                     child: Card(
                                       child: ListTile(
-                                        onTap: () {},
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return ViolationDialog(
+                                                    data: data.docs[index]);
+                                              });
+                                        },
                                         title: TextBold(
                                             text: data.docs[index]['violation'],
                                             fontSize: 14,
