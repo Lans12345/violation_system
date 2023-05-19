@@ -8,6 +8,7 @@ import 'package:violation_system/widgets/textfield_widget.dart';
 import 'package:violation_system/widgets/toast_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
+import '../data/fines.dart';
 import '../services/add_violation.dart';
 import 'dart:io';
 
@@ -186,9 +187,15 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
 
   var _dropValue1 = 0;
 
-  List vehicles = ['Car', 'Motorcycle', 'Bus', 'Jeep', 'Van'];
+  var _dropValue2 = 0;
 
-  late String vehicle = 'Car';
+  String violation = '';
+
+  List vehicles = ['PUJ', 'Motorcycle/Tricycle'];
+
+  late String vehicle = 'PUJ';
+
+  int fee = 0;
   @override
   Widget build(BuildContext context) {
     print(imageEvidence);
@@ -352,8 +359,70 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
               const SizedBox(
                 height: 10,
               ),
-              TextFieldWidget(
-                  label: 'Violation/s', controller: violationController),
+              Align(
+                alignment: Alignment.topLeft,
+                child: TextRegular(
+                    text: 'Violation', fontSize: 12, color: Colors.black),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 300,
+                height: 35,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black)),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: DropdownButton(
+                      underline: const SizedBox(),
+                      dropdownColor: Colors.white,
+                      focusColor: Colors.white,
+                      value: _dropValue2,
+                      items: [
+                        if (vehicle == 'PUJ')
+                          for (int i = 0; i < pujFines.length; i++)
+                            DropdownMenuItem(
+                              onTap: (() {
+                                violation = pujFines[i]['offense'];
+                                fee = pujFines[i]['fine'];
+                              }),
+                              value: i,
+                              child: SizedBox(
+                                width: 175,
+                                child: TextRegular(
+                                    text: '${pujFines[i]['offense']}',
+                                    fontSize: 14,
+                                    color: Colors.black),
+                              ),
+                            ),
+                        if (vehicle == 'Motorcycle/Tricycle')
+                          for (int i = 0; i < violationsAndFines.length; i++)
+                            DropdownMenuItem(
+                              onTap: (() {
+                                violation = violationsAndFines[i]['violation'];
+                                fee = violationsAndFines[i]['fine'];
+                              }),
+                              value: i,
+                              child: SizedBox(
+                                width: 175,
+                                child: TextRegular(
+                                    text:
+                                        '${violationsAndFines[i]['violation']}',
+                                    fontSize: 14,
+                                    color: Colors.black),
+                              ),
+                            ),
+                      ],
+                      onChanged: ((value) {
+                        setState(() {
+                          _dropValue2 = int.parse(value.toString());
+                        });
+                      })),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -395,14 +464,15 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
                 nameController.text,
                 genderController.text,
                 ageController.text,
-                violationController.text,
+                violation,
                 licenseController.text,
                 platenumberController.text,
                 vehicledescriptionController.text,
                 locationController.text,
                 imageEvidence,
                 imageOwner,
-                myName);
+                myName,
+                fee);
             locationController.clear();
             vehicledescriptionController.clear();
             platenumberController.clear();
