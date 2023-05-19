@@ -52,6 +52,7 @@ dependencies:
   flutter_downloader:
   intl: ^0.18.1
   dio:
+
   
 
 

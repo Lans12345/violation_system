@@ -16,6 +16,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
   final scroll = ScrollController();
 
   String dropdownValue = 'Weekly';
+  String dropdownValue1 = 'Paid';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,20 +26,41 @@ class _ReportsScreenState extends State<ReportsScreen> {
         title: TextBold(
             text: 'Request for Approval', fontSize: 18, color: Colors.white),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.print,
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.only(left: 100, right: 100),
+              padding: const EdgeInsets.only(left: 95, right: 95),
+              child: DropdownButton<String>(
+                value: dropdownValue1,
+                icon: const Icon(Icons.arrow_drop_down),
+                iconSize: 24,
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: const SizedBox(),
+                onChanged: (newValue) {
+                  setState(() {
+                    dropdownValue1 = newValue!;
+                  });
+                },
+                items: <String>['Paid', 'Unpaid']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: TextRegular(
+                          text: value, fontSize: 18, color: Colors.black),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 50, right: 50),
               child: DropdownButton<String>(
                 value: dropdownValue,
                 icon: const Icon(Icons.arrow_drop_down),
@@ -58,7 +80,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: TextRegular(
-                          text: 'Status: $value',
+                          text: 'Reports : $value',
                           fontSize: 18,
                           color: Colors.black),
                     ),
@@ -73,13 +95,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     ? FirebaseFirestore.instance
                         .collection('Violations')
                         .where('status', isEqualTo: 'Accepted')
-                        .where('paid', isEqualTo: false)
+                        .where('paid',
+                            isEqualTo: dropdownValue1 == 'Paid' ? true : false)
                         .where('day', isEqualTo: DateTime.now().day.toString())
                         .snapshots()
                     : FirebaseFirestore.instance
                         .collection('Violations')
                         .where('status', isEqualTo: 'Accepted')
-                        .where('paid', isEqualTo: false)
+                        .where('paid',
+                            isEqualTo: dropdownValue1 == 'Paid' ? true : false)
                         .where('month',
                             isEqualTo: DateTime.now().month.toString())
                         .snapshots(),
