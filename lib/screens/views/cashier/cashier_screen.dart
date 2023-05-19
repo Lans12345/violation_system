@@ -168,6 +168,7 @@ class _CashierScreenState extends State<CashierScreen> {
                         isLessThan:
                             '${toBeginningOfSentenceCase(nameSearched)}z')
                     .where('status', isEqualTo: 'Accepted')
+                    .where('paid', isEqualTo: false)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

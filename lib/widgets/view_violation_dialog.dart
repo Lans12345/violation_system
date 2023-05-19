@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class ViolationDialog extends StatelessWidget {
@@ -36,9 +37,40 @@ class ViolationDialog extends StatelessWidget {
             : const SizedBox(),
         box.read('role') == 'Driver'
             ? TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return AlertDialog(
+                          title: TextBold(
+                              text: 'QR Code for this Violation',
+                              fontSize: 18,
+                              color: Colors.black),
+                          content: SizedBox(
+                            height: 300,
+                            width: 300,
+                            child: QrImage(
+                              data: data['id'],
+                              version: QrVersions.auto,
+                              size: 200.0,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }),
+                                child: TextRegular(
+                                    text: 'Close',
+                                    fontSize: 14,
+                                    color: Colors.black)),
+                          ],
+                        );
+                      }));
+                },
                 child: TextBold(
-                  text: 'Download QR Code',
+                  text: 'View QR Code',
                   fontSize: 14,
                   color: Colors.blue,
                 ),

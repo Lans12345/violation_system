@@ -35,7 +35,8 @@ Future addViolation(
     'evidence': evidence,
     'owner': owner,
     'myName': myName,
-    'fee': fee
+    'fee': fee,
+    'paid': false
   };
 
   addNotif(myName, FirebaseAuth.instance.currentUser!.uid, name, violation);

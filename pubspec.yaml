@@ -49,6 +49,7 @@ dependencies:
   geolocator: ^9.0.2
   qr_flutter:
   flutter_barcode_scanner:
+  flutter_downloader:
 
 
 dev_dependencies:

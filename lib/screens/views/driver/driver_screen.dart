@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../../../widgets/text_widget.dart';
 import '../../../widgets/view_violation_dialog.dart';
 import '../../auth/landing_screen.dart';
@@ -163,6 +162,7 @@ class DriverScreen extends StatelessWidget {
                                 .collection('Violations')
                                 .where('name', isEqualTo: box.read('name'))
                                 .where('status', isEqualTo: 'Accepted')
+                                .where('paid', isEqualTo: false)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
