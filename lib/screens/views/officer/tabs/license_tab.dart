@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:violation_system/widgets/add_violation_dialog.dart';
 import 'package:intl/intl.dart';
@@ -119,22 +120,26 @@ class _LicenseTabState extends State<LicenseTab> {
     markers.add(mark1);
   }
 
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     final double longDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
-        child: const Icon(Icons.add),
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return const AddViolationDialog();
-              });
-        },
-      ),
+      floatingActionButton: box.read('role') == 'Officer'
+          ? FloatingActionButton(
+              backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+              child: const Icon(Icons.add),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AddViolationDialog();
+                    });
+              },
+            )
+          : const SizedBox(),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {

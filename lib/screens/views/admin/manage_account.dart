@@ -34,7 +34,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
 
   List<String> users = ['Officer', 'Cashier', 'Driver'];
 
-  String user = 'Officer';
+  String user1 = 'Officer';
 
   int _dropValue1 = 0;
 
@@ -318,7 +318,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                       for (int i = 0; i < users.length; i++)
                         DropdownMenuItem(
                           onTap: (() {
-                            user = users[i];
+                            user1 = users[i];
                           }),
                           value: i,
                           child: Row(
@@ -411,7 +411,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                                       age,
                                       address,
                                       user.user!.uid,
-                                      user);
+                                      user1);
 
                                   showToast("Registered Succesfully!");
                                   Navigator.of(context).pushReplacement(

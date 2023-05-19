@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/screens/views/admin/admin_home.dart';
+import 'package:violation_system/screens/views/cashier/cashier_screen.dart';
+import 'package:violation_system/screens/views/driver/driver_screen.dart';
 import 'package:violation_system/screens/views/officer/officer_home_screen.dart';
 import 'package:violation_system/widgets/textfield_widget.dart';
 
@@ -8,11 +12,19 @@ import '../../../widgets/button_widget.dart';
 import '../../../widgets/text_widget.dart';
 import '../../../widgets/toast_widget.dart';
 
-class OfficerLogin extends StatelessWidget {
+class OfficerLogin extends StatefulWidget {
+  const OfficerLogin({super.key});
+
+  @override
+  State<OfficerLogin> createState() => _OfficerLoginState();
+}
+
+class _OfficerLoginState extends State<OfficerLogin> {
   final usernameController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  OfficerLogin({super.key});
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +64,8 @@ class OfficerLogin extends StatelessWidget {
               ButtonWidget(
                 label: 'Login',
                 onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  String role = '';
                   if (usernameController.text == 'admin-username' &&
                       passwordController.text == 'admin-password') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -62,8 +76,31 @@ class OfficerLogin extends StatelessWidget {
                       await FirebaseAuth.instance.signInWithEmailAndPassword(
                           email: '${usernameController.text}@officer.com',
                           password: passwordController.text);
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const OfficerHomeScreen()));
+
+                      await FirebaseFirestore.instance
+                          .collection('Officers')
+                          .where('id',
+                              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                          .get()
+                          .then((QuerySnapshot querySnapshot) async {
+                        for (var doc in querySnapshot.docs) {
+                          box.write('role', doc['role']);
+                          setState(() {
+                            role = doc['role'];
+                          });
+                        }
+                      });
+
+                      if (role == 'Officer') {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const OfficerHomeScreen()));
+                      } else if (role == 'Cashier') {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const CashierScreen()));
+                      } else if (role == 'Driver') {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const DriverScreen()));
+                      }
                       showToast('Logged in succesfully!');
                     } on Exception catch (e) {
                       showToast("An error occurred: $e");
