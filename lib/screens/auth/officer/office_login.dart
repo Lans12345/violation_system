@@ -85,6 +85,7 @@ class _OfficerLoginState extends State<OfficerLogin> {
                           .then((QuerySnapshot querySnapshot) async {
                         for (var doc in querySnapshot.docs) {
                           box.write('role', doc['role']);
+                          box.write('name', doc['name']);
                           setState(() {
                             role = doc['role'];
                           });
@@ -99,7 +100,7 @@ class _OfficerLoginState extends State<OfficerLogin> {
                             builder: (context) => const CashierScreen()));
                       } else if (role == 'Driver') {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const DriverScreen()));
+                            builder: (context) => DriverScreen()));
                       }
                       showToast('Logged in succesfully!');
                     } on Exception catch (e) {

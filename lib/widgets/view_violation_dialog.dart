@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class ViolationDialog extends StatelessWidget {
   late dynamic data;
+
+  final box = GetStorage();
 
   ViolationDialog({super.key, required this.data});
 
@@ -15,20 +18,32 @@ class ViolationDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       content: contentBox(context),
       actions: [
-        TextButton(
-          onPressed: () async {
-            await FirebaseFirestore.instance
-                .collection('Violations')
-                .doc(data.id)
-                .delete();
-            Navigator.pop(context);
-          },
-          child: TextBold(
-            text: 'Delete',
-            fontSize: 14,
-            color: Colors.red,
-          ),
-        ),
+        box.read('role') == 'Admin'
+            ? TextButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .collection('Violations')
+                      .doc(data.id)
+                      .delete();
+                  Navigator.pop(context);
+                },
+                child: TextBold(
+                  text: 'Delete',
+                  fontSize: 14,
+                  color: Colors.red,
+                ),
+              )
+            : const SizedBox(),
+        box.read('role') == 'Driver'
+            ? TextButton(
+                onPressed: () {},
+                child: TextBold(
+                  text: 'Download QR Code',
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              )
+            : const SizedBox()
       ],
     );
   }
