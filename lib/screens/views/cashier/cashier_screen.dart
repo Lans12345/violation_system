@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:violation_system/screens/views/officer/tabs/license_tab.dart';
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
+import 'package:violation_system/widgets/view_violation_dialog.dart';
 import '../../../../widgets/text_widget.dart';
 import '../../auth/landing_screen.dart';
 import '../officer/officer_notif_screen.dart';
@@ -21,9 +24,61 @@ class _CashierScreenState extends State<CashierScreen> {
   final box = GetStorage();
 
   String nameSearched = '';
+
+  String qrCode = '';
+
+  Future<void> scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        this.qrCode = qrCode;
+      });
+
+      showDialog(
+          context: context,
+          builder: ((context) {
+            return StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Violations')
+                    .doc(qrCode)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox();
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const SizedBox();
+                  }
+                  dynamic data = snapshot.data;
+                  return ViolationDialog(data: data);
+                });
+          }));
+    } on PlatformException {
+      qrCode = 'Failed to get platform version.';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () {
+          scanQRCode();
+        },
+        tooltip: 'Add Announcement',
+        child: const Icon(Icons.qr_code),
+      ),
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -122,7 +177,7 @@ class _CashierScreenState extends State<CashierScreen> {
               height: 30,
             ),
             TextBold(
-                text: 'Welcome Officer!', fontSize: 32, color: Colors.black),
+                text: 'Welcome Cashier!', fontSize: 32, color: Colors.black),
             const SizedBox(
               height: 20,
             ),

@@ -2,14 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:violation_system/widgets/receipt_widget.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
-class ViolationDialog extends StatelessWidget {
+class ViolationDialog extends StatefulWidget {
   late dynamic data;
 
-  final box = GetStorage();
-
   ViolationDialog({super.key, required this.data});
+
+  @override
+  State<ViolationDialog> createState() => _ViolationDialogState();
+}
+
+class _ViolationDialogState extends State<ViolationDialog> {
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +25,30 @@ class ViolationDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       content: contentBox(context),
       actions: [
+        box.read('role') == 'Cashier'
+            ? TextButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .collection('Violations')
+                      .doc(widget.data.id)
+                      .update({
+                    'paid': true,
+                  });
+                  Navigator.pop(context);
+                },
+                child: TextBold(
+                  text: 'Mark as Paid',
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              )
+            : const SizedBox(),
         box.read('role') == 'Admin'
             ? TextButton(
                 onPressed: () async {
                   await FirebaseFirestore.instance
                       .collection('Violations')
-                      .doc(data.id)
+                      .doc(widget.data.id)
                       .delete();
                   Navigator.pop(context);
                 },
@@ -39,38 +63,55 @@ class ViolationDialog extends StatelessWidget {
             ? TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  showDialog(
-                      context: context,
-                      builder: ((context) {
-                        return AlertDialog(
-                          title: TextBold(
-                              text: 'QR Code for this Violation',
-                              fontSize: 18,
-                              color: Colors.black),
-                          content: SizedBox(
-                            height: 300,
-                            width: 300,
-                            child: QrImage(
-                              data: data['id'],
-                              version: QrVersions.auto,
-                              size: 200.0,
+                  if (widget.data['paid'] == true) {
+                    // download receipt
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return Dialog(
+                            child: SizedBox(
+                              height: 500,
+                              width: 500,
+                              child: ReceiptWidget(data: widget.data),
                             ),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: (() {
-                                  Navigator.pop(context);
-                                }),
-                                child: TextRegular(
-                                    text: 'Close',
-                                    fontSize: 14,
-                                    color: Colors.black)),
-                          ],
-                        );
-                      }));
+                          );
+                        }));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return AlertDialog(
+                            title: TextBold(
+                                text: 'QR Code for this Violation',
+                                fontSize: 18,
+                                color: Colors.black),
+                            content: SizedBox(
+                              height: 300,
+                              width: 300,
+                              child: QrImage(
+                                data: widget.data['id'],
+                                version: QrVersions.auto,
+                                size: 200.0,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: (() {
+                                    Navigator.pop(context);
+                                  }),
+                                  child: TextRegular(
+                                      text: 'Close',
+                                      fontSize: 14,
+                                      color: Colors.black)),
+                            ],
+                          );
+                        }));
+                  }
                 },
                 child: TextBold(
-                  text: 'View QR Code',
+                  text: widget.data['paid'] == true
+                      ? 'View Receipt'
+                      : 'View QR Code',
                   fontSize: 14,
                   color: Colors.blue,
                 ),
@@ -111,20 +152,20 @@ class ViolationDialog extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                buildInfoRow('Car:', data['car']),
-                buildInfoRow('Name:', data['name']),
-                buildInfoRow('Gender:', data['gender']),
-                buildInfoRow('Age:', data['age'].toString()),
-                buildInfoRow('Violation:', data['violation']),
-                buildInfoRow('Fine:', '₱${data['fee']}'),
-                buildInfoRow('License Number:', data['licenseNumber']),
-                buildInfoRow('Plate Number:', data['plateNumber']),
+                buildInfoRow('Car:', widget.data['car']),
+                buildInfoRow('Name:', widget.data['name']),
+                buildInfoRow('Gender:', widget.data['gender']),
+                buildInfoRow('Age:', widget.data['age'].toString()),
+                buildInfoRow('Violation:', widget.data['violation']),
+                buildInfoRow('Fine:', '₱${widget.data['fee']}'),
+                buildInfoRow('License Number:', widget.data['licenseNumber']),
+                buildInfoRow('Plate Number:', widget.data['plateNumber']),
                 buildInfoRow(
-                    'Vehicle Description:', data['vehicleDescription']),
-                buildInfoRow('Location:', data['location']),
+                    'Vehicle Description:', widget.data['vehicleDescription']),
+                buildInfoRow('Location:', widget.data['location']),
                 const SizedBox(height: 16),
-                buildImageRow('Evidence:', data['evidence']),
-                buildImageRow('Owner:', data['owner']),
+                buildImageRow('Evidence:', widget.data['evidence']),
+                buildImageRow('Owner:', widget.data['owner']),
               ],
             ),
           ),

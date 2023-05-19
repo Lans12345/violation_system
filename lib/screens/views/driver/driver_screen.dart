@@ -162,7 +162,6 @@ class DriverScreen extends StatelessWidget {
                                 .collection('Violations')
                                 .where('name', isEqualTo: box.read('name'))
                                 .where('status', isEqualTo: 'Accepted')
-                                .where('paid', isEqualTo: false)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {

@@ -50,6 +50,8 @@ dependencies:
   qr_flutter:
   flutter_barcode_scanner:
   flutter_downloader:
+  flutter_screenshot:
+  image_gallery_saver:
 
 
 dev_dependencies:

@@ -123,6 +123,7 @@ class _AdminHomeState extends State<AdminHome> {
                 stream: FirebaseFirestore.instance
                     .collection('Violations')
                     .where('status', isEqualTo: 'Accepted')
+                    .where('paid', isEqualTo: false)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

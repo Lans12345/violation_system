@@ -30,6 +30,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
             stream: FirebaseFirestore.instance
                 .collection('Violations')
                 .where('status', isEqualTo: 'Pending')
+                .where('paid', isEqualTo: false)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
