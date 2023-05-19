@@ -51,6 +51,7 @@ dependencies:
   flutter_barcode_scanner:
   flutter_downloader:
   intl: ^0.18.1
+  dio:
   
 
 

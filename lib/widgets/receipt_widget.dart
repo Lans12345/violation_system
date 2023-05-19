@@ -66,20 +66,16 @@ class ReceiptWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Download receipt',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )),
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Screenshot your receipt',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

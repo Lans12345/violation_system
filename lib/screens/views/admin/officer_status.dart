@@ -68,10 +68,12 @@ class _OfficerStatusScreenState extends State<OfficerStatusScreen> {
                 stream: dropdownValue == 'Active'
                     ? FirebaseFirestore.instance
                         .collection('Officers')
+                        .where('role', isEqualTo: 'Officer')
                         .where('isActive', isEqualTo: true)
                         .snapshots()
                     : FirebaseFirestore.instance
                         .collection('Officers')
+                        .where('role', isEqualTo: 'Officer')
                         .where('isActive', isEqualTo: false)
                         .snapshots(),
                 builder: (BuildContext context,
