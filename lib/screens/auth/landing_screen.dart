@@ -21,7 +21,7 @@ class LandingScreen extends StatelessWidget {
               height: 20,
             ),
             TextBold(
-              text: 'T & VR',
+              text: 'BTAV',
               fontSize: 48,
               color: Colors.black,
             ),
@@ -31,8 +31,8 @@ class LandingScreen extends StatelessWidget {
             ButtonWidget(
               label: 'Get Started',
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => OfficerLogin()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const OfficerLogin()));
               },
             ),
             // const SizedBox(

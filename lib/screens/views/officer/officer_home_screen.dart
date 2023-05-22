@@ -69,7 +69,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
         ),
         backgroundColor: const Color.fromARGB(255, 240, 23, 95),
         title: TextBold(
-            text: _currentIndex != 3 ? 'T & VR' : 'My Profile',
+            text: _currentIndex != 3 ? 'BTAV' : 'My Profile',
             fontSize: 24,
             color: Colors.white),
         centerTitle: true,

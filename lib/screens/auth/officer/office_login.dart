@@ -42,7 +42,7 @@ class _OfficerLoginState extends State<OfficerLogin> {
                 height: 20,
               ),
               TextBold(
-                text: 'T & VR',
+                text: 'BTAV',
                 fontSize: 48,
                 color: Colors.black,
               ),

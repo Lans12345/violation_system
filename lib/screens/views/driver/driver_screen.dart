@@ -26,7 +26,7 @@ class DriverScreen extends StatelessWidget {
           child: Image.asset('assets/images/logo.png'),
         ),
         backgroundColor: const Color.fromARGB(255, 240, 23, 95),
-        title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
+        title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [
           IconButton(

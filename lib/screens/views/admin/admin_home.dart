@@ -61,7 +61,7 @@ class _AdminHomeState extends State<AdminHome> {
       drawer: const DrawerWidget(),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 240, 23, 95),
-        title: TextBold(text: 'T & VR', fontSize: 24, color: Colors.white),
+        title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [
           IconButton(
