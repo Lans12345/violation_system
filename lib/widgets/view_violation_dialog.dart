@@ -98,6 +98,7 @@ class _ViolationDialogState extends State<ViolationDialog> {
                     ? TextButton(
                         onPressed: () async {
                           await FirebaseFirestore.instance
+                              .collection('Violations')
                               .doc(widget.data.id)
                               .delete();
                           Navigator.pop(context);
