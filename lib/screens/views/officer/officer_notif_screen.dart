@@ -27,7 +27,7 @@ class OfficerNotifScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('Notifs')
-              .orderBy('dateTime')
+              .orderBy('dateTime', descending: true)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
