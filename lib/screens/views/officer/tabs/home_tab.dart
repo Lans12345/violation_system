@@ -104,11 +104,10 @@ class _HomeTabState extends State<HomeTab> {
                             child: Card(
                               child: ListTile(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                          builder: (context) => LicenseTab(
-                                                userDetails: violationData,
-                                              )));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => LicenseTab(
+                                            userDetails: violationData,
+                                          )));
                                 },
                                 title: TextBold(
                                     text: data.docs[index]['violation'],
