@@ -69,6 +69,7 @@ class _ViolationDialogState extends State<ViolationDialog> {
                 buildInfoRow(
                     'Vehicle Description:', widget.data['vehicleDescription']),
                 buildInfoRow('Location:', widget.data['location']),
+                buildInfoRow('Officer:', widget.data['myName']),
                 const SizedBox(height: 16),
                 buildImageRow('Evidence:', widget.data['evidence']),
                 buildImageRow('Owner:', widget.data['owner']),
@@ -97,7 +98,6 @@ class _ViolationDialogState extends State<ViolationDialog> {
                     ? TextButton(
                         onPressed: () async {
                           await FirebaseFirestore.instance
-                              .collection('Violations')
                               .doc(widget.data.id)
                               .delete();
                           Navigator.pop(context);

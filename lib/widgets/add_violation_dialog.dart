@@ -27,6 +27,8 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
   }
 
   String myName = '';
+  String myNumber = '';
+  String myAddress = '';
 
   getMyName() async {
     FirebaseFirestore.instance
@@ -37,6 +39,8 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
       for (var doc in querySnapshot.docs) {
         setState(() {
           myName = doc['name'];
+          myNumber = doc['contactNumber'];
+          myAddress = doc['address'];
         });
       }
     });
@@ -520,7 +524,9 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
                 imageEvidence,
                 imageOwner,
                 myName,
-                fee);
+                fee,
+                myNumber,
+                myAddress);
             locationController.clear();
             vehicledescriptionController.clear();
             platenumberController.clear();

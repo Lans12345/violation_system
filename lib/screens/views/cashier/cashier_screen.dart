@@ -82,7 +82,10 @@ class _CashierScreenState extends State<CashierScreen> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset(
+            'assets/images/logo.png',
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.green,
         title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
@@ -260,11 +263,11 @@ class _CashierScreenState extends State<CashierScreen> {
                                           )));
                                 },
                                 title: TextBold(
-                                    text: data.docs[index]['violation'],
+                                    text: data.docs[index]['name'],
                                     fontSize: 14,
                                     color: Colors.black),
                                 subtitle: TextRegular(
-                                    text: data.docs[index]['name'],
+                                    text: data.docs[index]['violation'],
                                     fontSize: 11,
                                     color: Colors.grey),
                                 trailing: TextRegular(

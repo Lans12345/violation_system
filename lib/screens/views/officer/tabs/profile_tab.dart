@@ -378,11 +378,11 @@ class _ProfileTabState extends State<ProfileTab> {
                                               });
                                         },
                                         title: TextBold(
-                                            text: data.docs[index]['violation'],
+                                            text: data.docs[index]['name'],
                                             fontSize: 14,
                                             color: Colors.black),
                                         subtitle: TextRegular(
-                                            text: data.docs[index]['name'],
+                                            text: data.docs[index]['violation'],
                                             fontSize: 11,
                                             color: Colors.grey),
                                         trailing: TextRegular(

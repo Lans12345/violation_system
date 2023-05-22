@@ -65,7 +65,10 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset(
+            'assets/images/logo.png',
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.green,
         title: TextBold(

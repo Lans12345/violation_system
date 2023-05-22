@@ -15,6 +15,8 @@ Future addViolation(
     evidence,
     owner,
     myName,
+    myNumber,
+    myAddress,
     fee) async {
   final docUser = FirebaseFirestore.instance.collection('Violations').doc();
 
@@ -39,6 +41,8 @@ Future addViolation(
     'paid': false,
     'day': DateTime.now().day,
     'month': DateTime.now().month,
+    'myNumber': myNumber,
+    'myAddress': myAddress
   };
 
   addNotif(myName, FirebaseAuth.instance.currentUser!.uid, name, violation);
