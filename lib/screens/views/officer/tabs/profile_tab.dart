@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +22,77 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  late String fileName = '';
+
+  late File imageFile;
+
+  late String imageURL = '';
+
+  Future<void> uploadPicture(String inputSource) async {
+    final picker = ImagePicker();
+    XFile pickedImage;
+    try {
+      pickedImage = (await picker.pickImage(
+          source: inputSource == 'camera'
+              ? ImageSource.camera
+              : ImageSource.gallery,
+          maxWidth: 1920))!;
+
+      fileName = path.basename(pickedImage.path);
+      imageFile = File(pickedImage.path);
+
+      try {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: AlertDialog(
+                title: Row(
+              children: const [
+                CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Loading . . .',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'QRegular'),
+                ),
+              ],
+            )),
+          ),
+        );
+
+        await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName')
+            .putFile(imageFile);
+        imageURL = await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName')
+            .getDownloadURL();
+
+        await FirebaseFirestore.instance
+            .collection('Officers')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({'profile': imageURL});
+
+        Navigator.of(context).pop();
+      } on firebase_storage.FirebaseException catch (error) {
+        if (kDebugMode) {
+          print(error);
+        }
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+  }
+
   Set<Marker> markers = {};
 
   final Completer<GoogleMapController> _controller =
@@ -53,6 +128,9 @@ class _ProfileTabState extends State<ProfileTab> {
     markers.add(mark1);
   }
 
+  final contactnumberController = TextEditingController();
+  final addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final double latDelta = (rng.nextDouble() * maxDelta * 2) - maxDelta;
@@ -83,10 +161,16 @@ class _ProfileTabState extends State<ProfileTab> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Center(
-                        child: Image.asset(
-                          'assets/images/profile.png',
-                          height: 100,
+                      GestureDetector(
+                        onTap: () {
+                          uploadPicture('gallery');
+                        },
+                        child: Center(
+                          child: CircleAvatar(
+                            maxRadius: 50,
+                            minRadius: 50,
+                            backgroundImage: NetworkImage(data['profile']),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -113,17 +197,120 @@ class _ProfileTabState extends State<ProfileTab> {
                       const SizedBox(
                         height: 10,
                       ),
-                      TextRegular(
-                          text: 'Contact Number: ${data['contactNumber']}',
-                          fontSize: 14,
-                          color: Colors.grey),
+                      Row(
+                        children: [
+                          TextRegular(
+                              text: 'Contact Number: ${data['contactNumber']}',
+                              fontSize: 14,
+                              color: Colors.grey),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) {
+                                    return AlertDialog(
+                                      content: SizedBox(
+                                        height: 100,
+                                        width: 200,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: TextFormField(
+                                            controller: contactnumberController,
+                                            decoration: const InputDecoration(
+                                                labelText: 'Contact Number:'),
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: (() async {
+                                            await FirebaseFirestore.instance
+                                                .collection('Officers')
+                                                .doc(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .update({
+                                              'contactNumber':
+                                                  contactnumberController.text
+                                            });
+
+                                            Navigator.pop(context);
+                                          }),
+                                          child: TextBold(
+                                              text: 'Update',
+                                              fontSize: 14,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    );
+                                  }));
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 15,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
-                      TextRegular(
-                          text: 'Address: ${data['address']}',
-                          fontSize: 14,
-                          color: Colors.grey),
+                      Row(
+                        children: [
+                          TextRegular(
+                              text: 'Address: ${data['address']}',
+                              fontSize: 14,
+                              color: Colors.grey),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) {
+                                    return AlertDialog(
+                                      content: SizedBox(
+                                        height: 100,
+                                        width: 200,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: TextFormField(
+                                            controller: addressController,
+                                            decoration: const InputDecoration(
+                                                labelText: 'Address:'),
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: (() async {
+                                            await FirebaseFirestore.instance
+                                                .collection('Officers')
+                                                .doc(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .update({
+                                              'address': addressController.text
+                                            });
+
+                                            Navigator.pop(context);
+                                          }),
+                                          child: TextBold(
+                                              text: 'Update',
+                                              fontSize: 14,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    );
+                                  }));
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 15,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(
                         height: 10,
                       ),

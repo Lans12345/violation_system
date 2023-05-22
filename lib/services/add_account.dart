@@ -24,6 +24,7 @@ Future addAccount(
     'isActive': false,
     'dateTime': DateTime.now(),
     'role': role,
+    'profile': 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
   };
 
   await docUser.set(json);
