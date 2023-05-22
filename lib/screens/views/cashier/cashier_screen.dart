@@ -90,7 +90,7 @@ class _CashierScreenState extends State<CashierScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const OfficerNotifScreen()));
             },
             icon: StreamBuilder<QuerySnapshot>(

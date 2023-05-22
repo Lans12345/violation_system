@@ -66,7 +66,7 @@ class _AdminHomeState extends State<AdminHome> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const OfficerNotifScreen()));
             },
             icon: StreamBuilder<QuerySnapshot>(
