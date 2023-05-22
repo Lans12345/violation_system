@@ -22,7 +22,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(
             text: 'Request for Approval', fontSize: 18, color: Colors.white),
         centerTitle: true,

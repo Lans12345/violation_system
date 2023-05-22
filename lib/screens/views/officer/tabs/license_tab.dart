@@ -129,7 +129,7 @@ class _LicenseTabState extends State<LicenseTab> {
     return Scaffold(
       floatingActionButton: box.read('role') == 'Officer'
           ? FloatingActionButton(
-              backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+              backgroundColor: Colors.green,
               child: const Icon(Icons.add),
               onPressed: () {
                 showDialog(
@@ -150,7 +150,7 @@ class _LicenseTabState extends State<LicenseTab> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(
             text: widget.userDetails['licenseNumber'],
             fontSize: 24,

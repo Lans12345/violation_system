@@ -43,7 +43,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(
             text: 'Manage Accounts', fontSize: 18, color: Colors.white),
         centerTitle: true,
@@ -378,7 +378,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              color: const Color.fromARGB(255, 240, 23, 95),
+              color: Colors.green,
               onPressed: () {
                 showDialog(
                     context: context,

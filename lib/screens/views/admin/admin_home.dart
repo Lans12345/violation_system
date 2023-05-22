@@ -60,7 +60,7 @@ class _AdminHomeState extends State<AdminHome> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [

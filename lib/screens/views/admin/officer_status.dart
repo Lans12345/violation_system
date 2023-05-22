@@ -19,7 +19,7 @@ class _OfficerStatusScreenState extends State<OfficerStatusScreen> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(
             text: 'Officers Status', fontSize: 18, color: Colors.white),
         centerTitle: true,

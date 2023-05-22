@@ -84,7 +84,7 @@ class _CashierScreenState extends State<CashierScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Image.asset('assets/images/logo.png'),
         ),
-        backgroundColor: const Color.fromARGB(255, 240, 23, 95),
+        backgroundColor: Colors.green,
         title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
         centerTitle: true,
         actions: [
