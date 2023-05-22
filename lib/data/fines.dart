@@ -96,3 +96,99 @@ List<Map<String, dynamic>> violationsAndFines = [
   {'violation': 'Not Wearing Crash Helmet', 'fine': 1000},
   {'violation': 'Open Pipe (Noise Pollution)', 'fine': 500},
 ];
+
+List<Map<String, dynamic>> newList = [
+  {
+    'offense': 'Illegal Parking',
+    'fine': 200,
+  },
+  {
+    'offense': 'Disregarding Traffic Sign/Light',
+    'fine': 100,
+  },
+  {
+    'offense': 'Arrogant/Discourteous Driver',
+    'fine': 200,
+  },
+  {
+    'offense': 'Reckless Driving',
+    'fine': 200,
+  },
+  {
+    'offense': 'No OR/CR',
+    'fine': 300,
+  },
+  {
+    'offense': 'No Driver’s License Carried',
+    'fine': 300,
+  },
+  {
+    'offense': 'Trip Cutting',
+    'fine': 500,
+  },
+  {
+    'offense': 'No City Sticker',
+    'fine': 300,
+  },
+  {
+    'offense': 'No Body Number',
+    'fine': 200,
+  },
+  {
+    'offense': 'Wearing Slipper/Sando',
+    'fine': 150,
+  },
+  {
+    'offense': 'Overloading',
+    'fine': 200,
+  },
+  {
+    'offense': 'Out of line',
+    'fine': 200,
+  },
+  {
+    'offense': 'Out of Route',
+    'fine': 1000,
+  },
+  {
+    'offense': 'Establishing Terminal',
+    'fine': 200,
+  },
+  {
+    'offense': 'Refusal to Convey Passenger',
+    'fine': 500,
+  },
+  {
+    'offense': 'Obstruction',
+    'fine': 100,
+  },
+  {
+    'offense': 'Entering Prohibited Zone',
+    'fine': 100,
+  },
+  {'offense': 'Colorum Operator', 'fine': 1500},
+  {'offense': 'Delinquent Franchise', 'fine': 300},
+  {'offense': 'Incomplete Body Number Code', 'fine': 200},
+  {
+    'offense': 'Incomplete Side Car Number "Bacolod City" and Toda Name',
+    'fine': 150
+  },
+  {'offense': 'Without Headlight/Tail Light', 'fine': 150},
+  {'offense': 'Without Signal Light', 'fine': 150},
+  {'offense': 'Defective Muffler/Silencer', 'fine': 500},
+  {'offense': 'Without Interior Light', 'fine': 150},
+  {'offense': 'Obstruction of View of side Car', 'fine': 150},
+  {'offense': 'Dirty/Dilapidated Unit', 'fine': 150},
+  {'offense': 'Unauthorized Body Number', 'fine': 150},
+  {'offense': 'Unauthorized Change of Configuration', 'fine': 150},
+  {'offense': 'Unauthorized replacement of Engine Chassis', 'fine': 300},
+  {'offense': 'No/Broken Sidecar or Windshield', 'fine': 300},
+  {'offense': 'Unregistered Motor (LTO)', 'fine': 300},
+  {'offense': 'No attached plate Number', 'fine': 250},
+  {'offense': 'No Trash Can', 'fine': 500},
+  {'offense': 'Tampering of Annual Sticker', 'fine': 1000},
+  {'offense': 'No Information Sticker', 'fine': 150},
+  {'offense': 'No Annual Sticker Attached', 'fine': 50},
+  {'offense': 'Not Wearing Crash Helmet', 'fine': 1000},
+  {'offense': 'Open Pipe (Noise Pollution)', 'fine': 500},
+];
