@@ -19,105 +19,11 @@ class _ViolationDialogState extends State<ViolationDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 0,
       backgroundColor: Colors.transparent,
-      content: contentBox(context),
-      actions: [
-        box.read('role') == 'Cashier'
-            ? TextButton(
-                onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .collection('Violations')
-                      .doc(widget.data.id)
-                      .update({
-                    'paid': true,
-                  });
-                  Navigator.pop(context);
-                },
-                child: TextBold(
-                  text: 'Mark as Paid',
-                  fontSize: 14,
-                  color: Colors.blue,
-                ),
-              )
-            : const SizedBox(),
-        box.read('role') == 'Admin'
-            ? TextButton(
-                onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .collection('Violations')
-                      .doc(widget.data.id)
-                      .delete();
-                  Navigator.pop(context);
-                },
-                child: TextBold(
-                  text: 'Delete',
-                  fontSize: 14,
-                  color: Colors.red,
-                ),
-              )
-            : const SizedBox(),
-        box.read('role') == 'Driver'
-            ? TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  if (widget.data['paid'] == true) {
-                    // download receipt
-                    showDialog(
-                        context: context,
-                        builder: ((context) {
-                          return Dialog(
-                            child: SizedBox(
-                              height: 500,
-                              width: 500,
-                              child: ReceiptWidget(data: widget.data),
-                            ),
-                          );
-                        }));
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: ((context) {
-                          return AlertDialog(
-                            title: TextBold(
-                                text: 'QR Code for this Violation',
-                                fontSize: 18,
-                                color: Colors.black),
-                            content: SizedBox(
-                              height: 300,
-                              width: 300,
-                              child: QrImage(
-                                data: widget.data['id'],
-                                version: QrVersions.auto,
-                                size: 200.0,
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: (() {
-                                    Navigator.pop(context);
-                                  }),
-                                  child: TextRegular(
-                                      text: 'Close',
-                                      fontSize: 14,
-                                      color: Colors.black)),
-                            ],
-                          );
-                        }));
-                  }
-                },
-                child: TextBold(
-                  text: widget.data['paid'] == true
-                      ? 'View Receipt'
-                      : 'View QR Code',
-                  fontSize: 14,
-                  color: Colors.blue,
-                ),
-              )
-            : const SizedBox()
-      ],
+      child: contentBox(context),
     );
   }
 
@@ -166,6 +72,101 @@ class _ViolationDialogState extends State<ViolationDialog> {
                 const SizedBox(height: 16),
                 buildImageRow('Evidence:', widget.data['evidence']),
                 buildImageRow('Owner:', widget.data['owner']),
+                const SizedBox(
+                  height: 20,
+                ),
+                box.read('role') == 'Cashier'
+                    ? TextButton(
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection('Violations')
+                              .doc(widget.data.id)
+                              .update({
+                            'paid': true,
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: TextBold(
+                          text: 'Mark as Paid',
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
+                      )
+                    : const SizedBox(),
+                box.read('role') == 'Admin'
+                    ? TextButton(
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection('Violations')
+                              .doc(widget.data.id)
+                              .delete();
+                          Navigator.pop(context);
+                        },
+                        child: TextBold(
+                          text: 'Delete',
+                          fontSize: 14,
+                          color: Colors.red,
+                        ),
+                      )
+                    : const SizedBox(),
+                box.read('role') == 'Driver'
+                    ? TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          if (widget.data['paid'] == true) {
+                            // download receipt
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return Dialog(
+                                    child: SizedBox(
+                                      height: 500,
+                                      width: 500,
+                                      child: ReceiptWidget(data: widget.data),
+                                    ),
+                                  );
+                                }));
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return AlertDialog(
+                                    title: TextBold(
+                                        text: 'QR Code for this Violation',
+                                        fontSize: 18,
+                                        color: Colors.black),
+                                    content: SizedBox(
+                                      height: 300,
+                                      width: 300,
+                                      child: QrImage(
+                                        data: widget.data['id'],
+                                        version: QrVersions.auto,
+                                        size: 200.0,
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: (() {
+                                            Navigator.pop(context);
+                                          }),
+                                          child: TextRegular(
+                                              text: 'Close',
+                                              fontSize: 14,
+                                              color: Colors.black)),
+                                    ],
+                                  );
+                                }));
+                          }
+                        },
+                        child: TextBold(
+                          text: widget.data['paid'] == true
+                              ? 'View Receipt'
+                              : 'View QR Code',
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
+                      )
+                    : const SizedBox()
               ],
             ),
           ),

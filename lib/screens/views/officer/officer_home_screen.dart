@@ -77,7 +77,7 @@ class _OfficerHomeScreenState extends State<OfficerHomeScreen> {
           _currentIndex != 1
               ? IconButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const OfficerNotifScreen()));
                   },
                   icon: StreamBuilder<QuerySnapshot>(

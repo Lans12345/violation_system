@@ -90,7 +90,7 @@ class _CashierScreenState extends State<CashierScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const OfficerNotifScreen()));
             },
             icon: StreamBuilder<QuerySnapshot>(
@@ -254,10 +254,11 @@ class _CashierScreenState extends State<CashierScreen> {
                             child: Card(
                               child: ListTile(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => LicenseTab(
-                                            userDetails: violationData,
-                                          )));
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                          builder: (context) => LicenseTab(
+                                                userDetails: violationData,
+                                              )));
                                 },
                                 title: TextBold(
                                     text: data.docs[index]['violation'],
