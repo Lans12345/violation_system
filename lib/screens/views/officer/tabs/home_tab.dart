@@ -32,7 +32,9 @@ class _HomeTabState extends State<HomeTab> {
                     ? 'Welcome Officer!'
                     : box.read('role') == 'Driver'
                         ? 'Welcome Driver!'
-                        : 'Welcome Admin!',
+                        : box.read('role') == 'Cashier'
+                            ? 'Welcome Cashier!'
+                            : 'Welcome Admin!',
                 fontSize: 32,
                 color: Colors.black),
             const SizedBox(
