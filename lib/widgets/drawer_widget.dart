@@ -7,6 +7,7 @@ import 'package:violation_system/screens/views/admin/manage_account.dart';
 import 'package:violation_system/screens/views/admin/officer_status.dart';
 import 'package:violation_system/screens/views/admin/reports_page.dart';
 import 'package:violation_system/screens/views/admin/request_list.dart';
+import 'package:violation_system/screens/views/admin/violation_list.dart';
 import 'package:violation_system/widgets/text_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -78,6 +79,17 @@ class _MyDrawerState extends State<DrawerWidget> {
               onTap: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const RequestListScreen()));
+              },
+            ),
+            ListTile(
+              title: TextBold(
+                text: 'Violation List',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+              onTap: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ViolationListScreen()));
               },
             ),
             ListTile(

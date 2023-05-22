@@ -59,6 +59,7 @@ class _OfficerLoginState extends State<OfficerLogin> {
                   String role = '';
                   if (usernameController.text == 'admin-username' &&
                       passwordController.text == 'admin-password') {
+                    box.write('role', 'Admin');
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const AdminHome()));
                     showToast('Logged in succesfully!');
@@ -91,7 +92,7 @@ class _OfficerLoginState extends State<OfficerLogin> {
                             builder: (context) => const CashierScreen()));
                       } else if (role == 'Driver') {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => DriverScreen()));
+                            builder: (context) => const DriverScreen()));
                       }
                       showToast('Logged in succesfully!');
                     } on Exception catch (e) {

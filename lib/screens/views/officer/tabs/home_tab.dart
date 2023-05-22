@@ -28,7 +28,13 @@ class _HomeTabState extends State<HomeTab> {
               height: 30,
             ),
             TextBold(
-                text: 'Welcome Officer!', fontSize: 32, color: Colors.black),
+                text: box.read('role') == 'Office'
+                    ? 'Welcome Officer!'
+                    : box.read('role') == 'Driver'
+                        ? 'Welcome Driver!'
+                        : 'Welcome Admin!',
+                fontSize: 32,
+                color: Colors.black),
             const SizedBox(
               height: 20,
             ),
@@ -103,6 +109,33 @@ class _HomeTabState extends State<HomeTab> {
                             padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                             child: Card(
                               child: ListTile(
+                                onLongPress: () {
+                                  if (box.read('role') == 'Admin') {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) {
+                                          return SizedBox(
+                                            height: 100,
+                                            child: ListTile(
+                                              onTap: () async {
+                                                await FirebaseFirestore.instance
+                                                    .collection('Violations')
+                                                    .doc(data.docs[index].id)
+                                                    .delete();
+                                              },
+                                              leading: TextBold(
+                                                  text: 'Delete Violation',
+                                                  fontSize: 18,
+                                                  color: Colors.red),
+                                              trailing: const Icon(
+                                                Icons.delete_outline_outlined,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  } else {}
+                                },
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => LicenseTab(
