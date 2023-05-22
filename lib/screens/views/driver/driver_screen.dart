@@ -7,7 +7,16 @@ import '../../../widgets/view_violation_dialog.dart';
 import '../../auth/landing_screen.dart';
 import 'package:intl/intl.dart';
 
-class DriverScreen extends StatelessWidget {
+import '../officer/tabs/home_tab.dart';
+
+class DriverScreen extends StatefulWidget {
+  const DriverScreen({super.key});
+
+  @override
+  State<DriverScreen> createState() => _DriverScreenState();
+}
+
+class _DriverScreenState extends State<DriverScreen> {
   final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
       .collection('Officers')
       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -15,68 +24,19 @@ class DriverScreen extends StatelessWidget {
 
   final box = GetStorage();
 
-  DriverScreen({super.key});
+  int _currentIndex = 0;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            'assets/images/logo.png',
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.green,
-        title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: TextBold(
-                            text: 'Logout Confirmation',
-                            color: Colors.black,
-                            fontSize: 14),
-                        content: TextRegular(
-                            text: 'Are you sure you want to logout?',
-                            color: Colors.black,
-                            fontSize: 16),
-                        actions: <Widget>[
-                          MaterialButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: TextBold(
-                                text: 'Close',
-                                color: Colors.black,
-                                fontSize: 14),
-                          ),
-                          MaterialButton(
-                            onPressed: () async {
-                              await FirebaseAuth.instance.signOut();
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LandingScreen()));
-                            },
-                            child: TextBold(
-                                text: 'Continue',
-                                color: Colors.black,
-                                fontSize: 14),
-                          ),
-                        ],
-                      ));
-            },
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
+    final List<Widget> children = [
+      const HomeTab(),
+      StreamBuilder<DocumentSnapshot>(
           stream: userData,
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -233,6 +193,83 @@ class DriverScreen extends StatelessWidget {
               ),
             );
           }),
+    ];
+    return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            'assets/images/logo.png',
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        title: TextBold(text: 'BTAV', fontSize: 24, color: Colors.white),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: TextBold(
+                            text: 'Logout Confirmation',
+                            color: Colors.black,
+                            fontSize: 14),
+                        content: TextRegular(
+                            text: 'Are you sure you want to logout?',
+                            color: Colors.black,
+                            fontSize: 16),
+                        actions: <Widget>[
+                          MaterialButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: TextBold(
+                                text: 'Close',
+                                color: Colors.black,
+                                fontSize: 14),
+                          ),
+                          MaterialButton(
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LandingScreen()));
+                            },
+                            child: TextBold(
+                                text: 'Continue',
+                                color: Colors.black,
+                                fontSize: 14),
+                          ),
+                        ],
+                      ));
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+      body: children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: const TextStyle(fontFamily: 'QBold'),
+        unselectedLabelStyle: const TextStyle(fontFamily: 'QBold'),
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }

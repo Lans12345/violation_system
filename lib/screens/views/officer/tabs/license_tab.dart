@@ -152,7 +152,7 @@ class _LicenseTabState extends State<LicenseTab> {
         ),
         backgroundColor: Colors.green,
         title: TextBold(
-            text: widget.userDetails['licenseNumber'],
+            text: widget.userDetails['name'],
             fontSize: 24,
             color: Colors.white),
         centerTitle: true,
