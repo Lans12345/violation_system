@@ -183,9 +183,9 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
   final violationController = TextEditingController();
   final nameController = TextEditingController();
   final ageController = TextEditingController();
-  final genderController = TextEditingController();
 
   var _dropValue1 = 0;
+  var _dropValue3 = 0;
 
   var _dropValue2 = 0;
 
@@ -194,6 +194,10 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
   List vehicles = ['PUJ', 'Motorcycle/Tricycle'];
 
   late String vehicle = 'PUJ';
+
+  List genders = ['Male', 'Female'];
+
+  late String gender = 'Male';
 
   int fee = 0;
   @override
@@ -351,7 +355,51 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
               const SizedBox(
                 height: 10,
               ),
-              TextFieldWidget(label: 'Gender', controller: genderController),
+              Align(
+                alignment: Alignment.topLeft,
+                child: TextRegular(
+                    text: 'Gender', fontSize: 12, color: Colors.black),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 300,
+                height: 35,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black)),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: DropdownButton(
+                      dropdownColor: Colors.white,
+                      focusColor: Colors.white,
+                      value: _dropValue3,
+                      items: [
+                        for (int i = 0; i < genders.length; i++)
+                          DropdownMenuItem(
+                            onTap: (() {
+                              gender = genders[i];
+                            }),
+                            value: i,
+                            child: Row(
+                              children: [
+                                TextRegular(
+                                    text: '${genders[i]}',
+                                    fontSize: 14,
+                                    color: Colors.black),
+                              ],
+                            ),
+                          ),
+                      ],
+                      onChanged: ((value) {
+                        setState(() {
+                          _dropValue3 = int.parse(value.toString());
+                        });
+                      })),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -462,7 +510,7 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
             addViolation(
                 vehicle,
                 nameController.text,
-                genderController.text,
+                gender,
                 ageController.text,
                 violation,
                 licenseController.text,
@@ -479,7 +527,7 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
             ageController.clear();
             nameController.clear();
             violationController.clear();
-            genderController.clear();
+
             showToast('Violation Added! Waiting for confirmation');
           },
           child: TextBold(text: 'Continue', color: Colors.black, fontSize: 14),
