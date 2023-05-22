@@ -37,16 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 20,
               ),
               Image.asset(
-                'assets/images/logo.png',
+                'assets/images/FLASHVIEW.png',
                 width: 250,
               ),
               const SizedBox(
                 height: 50,
               ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 100, right: 100),
+              const Padding(
+                  padding: EdgeInsets.only(left: 100, right: 100),
                   child: SpinKitThreeBounce(
-                    color: Colors.blue[900],
+                    color: Colors.green,
                   )),
             ],
           ),

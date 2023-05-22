@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:violation_system/screens/auth/officer/office_login.dart';
 import 'package:violation_system/widgets/button_widget.dart';
-import 'package:violation_system/widgets/text_widget.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
@@ -15,18 +14,12 @@ class LandingScreen extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/logo.png',
-              height: 175,
+              height: 150,
+              width: 320,
             ),
+
             const SizedBox(
-              height: 20,
-            ),
-            TextBold(
-              text: 'BTAV',
-              fontSize: 48,
-              color: Colors.black,
-            ),
-            const SizedBox(
-              height: 50,
+              height: 100,
             ),
             ButtonWidget(
               label: 'Get Started',

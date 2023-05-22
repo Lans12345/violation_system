@@ -9,7 +9,6 @@ import 'package:violation_system/screens/views/officer/officer_home_screen.dart'
 import 'package:violation_system/widgets/textfield_widget.dart';
 
 import '../../../widgets/button_widget.dart';
-import '../../../widgets/text_widget.dart';
 import '../../../widgets/toast_widget.dart';
 
 class OfficerLogin extends StatefulWidget {
@@ -36,18 +35,10 @@ class _OfficerLoginState extends State<OfficerLogin> {
             children: [
               Image.asset(
                 'assets/images/logo.png',
-                height: 175,
+                width: 320,
               ),
               const SizedBox(
-                height: 20,
-              ),
-              TextBold(
-                text: 'BTAV',
-                fontSize: 48,
-                color: Colors.black,
-              ),
-              const SizedBox(
-                height: 30,
+                height: 50,
               ),
               TextFieldWidget(
                   label: 'Username', controller: usernameController),
