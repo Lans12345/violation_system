@@ -339,7 +339,6 @@ class _ProfileTabState extends State<ProfileTab> {
                                   isEqualTo:
                                       FirebaseAuth.instance.currentUser!.uid)
                               .where('status', isEqualTo: 'Accepted')
-                              .where('paid', isEqualTo: false)
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {

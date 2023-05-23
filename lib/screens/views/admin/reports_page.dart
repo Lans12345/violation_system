@@ -26,8 +26,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
           centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection('Officers').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('Officers')
+                .where('role', isEqualTo: 'Officer')
+                .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {

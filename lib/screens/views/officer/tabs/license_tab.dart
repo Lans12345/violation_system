@@ -203,10 +203,8 @@ class _LicenseTabState extends State<LicenseTab> {
                 StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Violations')
-                        .where('licenseNumber',
-                            isEqualTo: widget.userDetails['licenseNumber'])
+                        .where('name', isEqualTo: widget.userDetails['name'])
                         .where('status', isEqualTo: 'Accepted')
-                        .where('paid', isEqualTo: false)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
