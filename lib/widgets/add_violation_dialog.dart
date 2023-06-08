@@ -512,21 +512,22 @@ class _AddViolationDialogState extends State<AddViolationDialog> {
           onPressed: () async {
             Navigator.of(context).pop();
             addViolation(
-                vehicle,
-                nameController.text,
-                gender,
-                ageController.text,
-                violation,
-                licenseController.text,
-                platenumberController.text,
-                vehicledescriptionController.text,
-                locationController.text,
-                imageEvidence,
-                imageOwner,
-                myName,
-                fee,
-                myNumber,
-                myAddress);
+              vehicle,
+              nameController.text,
+              gender,
+              ageController.text,
+              violation,
+              licenseController.text,
+              platenumberController.text,
+              vehicledescriptionController.text,
+              locationController.text,
+              imageEvidence,
+              imageOwner,
+              myName,
+              myNumber,
+              myAddress,
+              fee,
+            );
             locationController.clear();
             vehicledescriptionController.clear();
             platenumberController.clear();
