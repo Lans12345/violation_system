@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:violation_system/screens/auth/landing_screen.dart';
+import 'package:violation_system/widgets/text_widget.dart';
+
+import 'auth/landing_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,10 +40,22 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               Image.asset(
                 'assets/images/FLASHVIEW.png',
-                width: 250,
+                width: 350,
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: TextRegular(
+                  text:
+                      '"BTAV: Empowering Communities to Report Street Violations and Foster Safer Roads"',
+                  fontSize: 14,
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               const Padding(
                   padding: EdgeInsets.only(left: 100, right: 100),
